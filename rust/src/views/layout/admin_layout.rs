@@ -5,6 +5,7 @@ use crate::views::pages::admin::{admin_header, admin_sidebar};
 pub fn create_admin_layout(content: Markup) -> Markup {
     html! {
       script src="/assets/js/drawer.js" defer {};
+      title { "Admin" }
       div class="flex min-h-screen w-full" {
         (admin_sidebar())
         div class="flex flex-1 flex-col" {

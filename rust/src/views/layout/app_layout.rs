@@ -11,7 +11,6 @@ pub fn create_app_layout(content: Markup) -> Markup {
                 script src="/assets/js/htmx.js" defer {};
                 script src="/assets/js/script.js" defer {};
                 link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" {};
-                title { "Rust Ecommerce" };
             }
             body hx-boost="true" {
                 (content)
