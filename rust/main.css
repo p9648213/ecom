@@ -1,0 +1,362 @@
+/*...........................................................................................
+//.....GGGGGGG....EEEEEEEEEEE.NNNN...NNNN..EEEEEEEEEEE.RRRRRRRRRR......AAAAA.....LLLL........
+//...GGGGGGGGGG...EEEEEEEEEEE.NNNNN..NNNN..EEEEEEEEEEE.RRRRRRRRRRR.....AAAAA.....LLLL........
+//..GGGGGGGGGGGG..EEEEEEEEEEE.NNNNN..NNNN..EEEEEEEEEEE.RRRRRRRRRRR....AAAAAA.....LLLL........
+//..GGGGG..GGGGG..EEEE........NNNNNN.NNNN..EEEE........RRRR...RRRRR...AAAAAAA....LLLL........
+//.GGGGG....GGG...EEEE........NNNNNN.NNNN..EEEE........RRRR...RRRRR..AAAAAAAA....LLLL........
+//.GGGG...........EEEEEEEEEE..NNNNNNNNNNN..EEEEEEEEEE..RRRRRRRRRRR...AAAAAAAA....LLLL........
+//.GGGG..GGGGGGGG.EEEEEEEEEE..NNNNNNNNNNN..EEEEEEEEEE..RRRRRRRRRRR...AAAA.AAAA...LLLL........
+//.GGGG..GGGGGGGG.EEEEEEEEEE..NNNNNNNNNNN..EEEEEEEEEE..RRRRRRRR.....AAAAAAAAAA...LLLL........
+//.GGGGG.GGGGGGGG.EEEE........NNNNNNNNNNN..EEEE........RRRR.RRRR....AAAAAAAAAAA..LLLL........
+//..GGGGG....GGGG.EEEE........NNNN.NNNNNN..EEEE........RRRR..RRRR...AAAAAAAAAAA..LLLL........
+//..GGGGGGGGGGGG..EEEEEEEEEEE.NNNN..NNNNN..EEEEEEEEEEE.RRRR..RRRRR.RAAA....AAAA..LLLLLLLLLL..
+//...GGGGGGGGGG...EEEEEEEEEEE.NNNN..NNNNN..EEEEEEEEEEE.RRRR...RRRRRRAAA.....AAAA.LLLLLLLLLL..
+//.....GGGGGGG....EEEEEEEEEEE.NNNN...NNNN..EEEEEEEEEEE.RRRR....RRRRRAAA.....AAAA.LLLLLLLLLL..
+//...........................................................................................*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/*..............................................................
+//.TTTTTTTTTTT..OOOOOOO........AAAA.......SSSSSSS...SSTTTTTTTT..
+//.TTTTTTTTTTT.OOOOOOOOOO.....AAAAAA.....SSSSSSSSS..SSTTTTTTTT..
+//.TTTTTTTTTTTOOOOOOOOOOOO....AAAAAA....ASSSSSSSSSS.SSTTTTTTTT..
+//....TTTT...TOOOO...OOOOO....AAAAAAA...ASSS...SSSS.....TTTT....
+//....TTTT...TOOO.....OOOOO..AAAAAAAA...ASSSS...........TTTT....
+//....TTTT...TOOO......OOOO..AAAAAAAA....SSSSSSS........TTTT....
+//....TTTT...TOOO......OOOO..AAAA.AAAA....SSSSSSSS......TTTT....
+//....TTTT...TOOO......OOOO.AAAAAAAAAA......SSSSSSS.....TTTT....
+//....TTTT...TOOO.....OOOOO.AAAAAAAAAAA........SSSSS....TTTT....
+//....TTTT...TOOOOO..OOOOO.OAAAAAAAAAAA.ASSS...SSSSS....TTTT....
+//....TTTT....OOOOOOOOOOOO.OAAA....AAAA.ASSSSSSSSSS.....TTTT....
+//....TTTT.....OOOOOOOOOO..OAAA....AAAAA.SSSSSSSSSS.....TTTT....
+//....TTTT......OOOOOOO...OOAAA.....AAAA..SSSSSSS.......TTTT....
+//..............................................................*/
+
+#toast {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  z-index: 999999;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 10px 0;
+  min-width: 400px;
+  max-width: 450px;
+  border-left: 4px solid;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+  transition: all linear 0.3s;
+}
+
+.toast--success {
+  border-color: #47d864;
+}
+
+.toast--success .toast__icon {
+  color: #47d864;
+}
+
+.toast--info {
+  border-color: #2f86eb;
+}
+
+.toast--info .toast__icon {
+  color: #2f86eb;
+}
+
+.toast--warning {
+  border-color: #ffc021;
+}
+
+.toast--warning .toast__icon {
+  color: #ffc021;
+}
+
+.toast--error {
+  border-color: #ff623d;
+}
+
+.toast--error .toast__icon {
+  color: #ff623d;
+}
+
+.toast + .toast {
+  margin-top: 24px;
+}
+
+.toast__icon {
+  font-size: 24px;
+}
+
+.toast__icon,
+.toast__close {
+  padding: 0 16px;
+}
+
+.toast__body {
+  flex-grow: 1;
+}
+
+.toast__msg {
+  font-size: 16px;
+  color: #222222;
+  line-height: 1.5;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(calc(100% + 32px));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+/*.....................................................................................................
+//.IIIII.NNNN...NNNN..DDDDDDDDD...IIIII...CCCCCCC.......AAAAA...ATTTTTTTTTTT..OOOOOOO....ORRRRRRRRR....
+//.IIIII.NNNNN..NNNN..DDDDDDDDDD..IIIII..CCCCCCCCC......AAAAA...ATTTTTTTTTTTOOOOOOOOOO...ORRRRRRRRRR...
+//.IIIII.NNNNN..NNNN..DDDDDDDDDDD.IIIII.CCCCCCCCCCC....AAAAAA...ATTTTTTTTTTTOOOOOOOOOOO..ORRRRRRRRRRR..
+//.IIIII.NNNNNN.NNNN..DDDD...DDDD.IIIII.CCCC...CCCCC...AAAAAAA......TTTT...TOOOO...OOOOO.ORRR....RRRR..
+//.IIIII.NNNNNN.NNNN..DDDD....DDDDIIIIICCCC.....CCC...AAAAAAAA......TTTT...TOOO.....OOOO.ORRR....RRRR..
+//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC...........AAAAAAAA......TTTT..TTOO......OOOO.ORRRRRRRRRRR..
+//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC...........AAAA.AAAA.....TTTT..TTOO......OOOO.ORRRRRRRRRR...
+//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC..........AAAAAAAAAA.....TTTT..TTOO......OOOO.ORRRRRRRR.....
+//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC.....CCC..AAAAAAAAAAA....TTTT...TOOO.....OOOO.ORRR.RRRRR....
+//.IIIII.NNNN.NNNNNN..DDDD...DDDDDIIIII.CCCC...CCCCC.AAAAAAAAAAA....TTTT...TOOOO...OOOOO.ORRR..RRRRR...
+//.IIIII.NNNN..NNNNN..DDDDDDDDDDD.IIIII.CCCCCCCCCCC.AAAA....AAAA....TTTT...TOOOOOOOOOOO..ORRR...RRRR...
+//.IIIII.NNNN..NNNNN..DDDDDDDDDD..IIIII..CCCCCCCCCC.AAAA.....AAAA...TTTT....OOOOOOOOOO...ORRR...RRRRR..
+//.IIIII.NNNN...NNNN..DDDDDDDDD...IIIII...CCCCCCC..CAAAA.....AAAA...TTTT......OOOOOOO....ORRR....RRRR..
+//.....................................................................................................*/
+
+.button-indicator {
+  display: none;
+}
+
+.button-icon {
+  filter: contrast(0) brightness(100);
+}
+
+.htmx-request .button-indicator {
+  display: flex;
+}
+
+.htmx-request.button-indicator {
+  display: flex;
+}
+
+.htmx-request .button-text {
+  display: none;
+}
+
+.htmx-request.button-text {
+  display: none;
+}
+
+.disable-link {
+  pointer-events: none;
+}
+
+.htmx-request .loading-modal {
+  display: flex;
+}
+
+.htmx-request.loading-modal {
+  display: flex;
+}
+
+/*.................................................................................
+//.DDDDDDDDD....RRRRRRRRRR......AAAAA..AAAWW..WWWWW...WWWWWEEEEEEEEEE.ERRRRRRRRR...
+//.DDDDDDDDDD...RRRRRRRRRRR.....AAAAA...AAWW..WWWWW..WWWW.WEEEEEEEEEE.ERRRRRRRRRR..
+//.DDDDDDDDDDD..RRRRRRRRRRR....AAAAAA...AAWW..WWWWWW.WWWW.WEEEEEEEEEE.ERRRRRRRRRR..
+//.DDDD...DDDD..RRRR...RRRRR...AAAAAAA..AAWW.WWWWWWW.WWWW.WEEE........ERRR...RRRR..
+//.DDDD....DDDD.RRRR...RRRRR..AAAAAAAA..AAWW.WWWWWWW.WWWW.WEEE........ERRR...RRRR..
+//.DDDD....DDDD.RRRRRRRRRRR...AAAAAAAA...AWWWWWWWWWW.WWW..WEEEEEEEEE..ERRRRRRRRRR..
+//.DDDD....DDDD.RRRRRRRRRRR...AAAA.AAAA..AWWWWWW.WWWWWWW..WEEEEEEEEE..ERRRRRRRRRR..
+//.DDDD....DDDD.RRRRRRRR.....AAAAAAAAAA..AWWWWWW.WWWWWWW..WEEEEEEEEE..ERRRRRRR.....
+//.DDDD....DDDD.RRRR.RRRR....AAAAAAAAAAA.AWWWWWW.WWWWWWW..WEEE........ERRR.RRRR....
+//.DDDD...DDDDD.RRRR..RRRR...AAAAAAAAAAA.AWWWWWW.WWWWWWW..WEEE........ERRR..RRRR...
+//.DDDDDDDDDDD..RRRR..RRRRR.RAAA....AAAA..WWWWW...WWWWW...WEEEEEEEEEE.ERRR..RRRRR..
+//.DDDDDDDDDD...RRRR...RRRRRRAAA.....AAAA.WWWWW...WWWWW...WEEEEEEEEEE.ERRR...RRRR..
+//.DDDDDDDDD....RRRR....RRRRRAAA.....AAAA.WWWWW...WWWWW...WEEEEEEEEEE.ERRR....RRR..
+//.................................................................................*/
+
+
+.drawer {
+  display: none;
+}
+.drawer__overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+  opacity: 0;
+  
+  transition: opacity 0.3s;
+  will-change: opacity;
+  background-color: #000;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;      
+}
+
+.drawer__header {
+  /* Optional */
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.drawer__close {
+  /* Optional */
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%0A%3Csvg width='15px' height='16px' viewBox='0 0 15 16' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='2.-Menu' transform='translate(-15.000000, -13.000000)' stroke='%23000000'%3E%3Cg id='Group' transform='translate(15.000000, 13.521000)'%3E%3Cpath d='M0,0.479000129 L15,14.2971819' id='Path-3'%3E%3C/path%3E%3Cpath d='M0,14.7761821 L15,-1.24344979e-14' id='Path-3'%3E%3C/path%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.drawer__wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 18rem;
+  z-index: 9999;
+  overflow: auto;
+  
+  transition: transform 0.3s;
+  will-change: transform;
+  background-color: #fff;
+ 
+  display: flex;
+  flex-direction: column; 
+
+  -webkit-transform: translate3d(103%, 0, 0);
+  transform: translate3d(103%, 0, 0); /* extra 3% because of box-shadow */ 
+  
+  -webkit-overflow-scrolling: touch; /* enables momentum scrolling in iOS overflow elements */
+
+  /* Optional */
+  box-shadow: 0 2px 6px #777;
+}
+
+.drawer__content {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  flex-grow: 1;
+  /* Optional */
+  padding: 1.5rem;
+  padding-top: 0;
+}
+
+.drawer--left .drawer__wrapper {
+  left: 0;
+  right: auto;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+}
+
+.drawer.is-active {
+  display: block;
+}
+
+.drawer.is-visible .drawer__wrapper {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.drawer.is-visible .drawer__overlay {
+  opacity: 0.5;
+}
