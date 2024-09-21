@@ -21,8 +21,7 @@ pub fn register_form() -> Markup {
                 div class="mt-2 flex justify-center" {
                     "Already have an account?"
                     a id="login-link" href="/auth/login" class="font-medium text-pretty hover:underline ml-2" {
-                        span class="button-text" { "Login" }
-                        div class="button-indicator w-6 h-6 border-4 text-primary border-t-transparent rounded-full animate-spin flex" {}
+                        span { "Login" }
                     }
                 }
             }
@@ -30,7 +29,7 @@ pub fn register_form() -> Markup {
                 id="register-form"
                 hx-post="/auth/register"
                 hx-swap="none"
-                hx-on:submit="this.reset()"
+                "hx-on::after-request"="if(event.detail.successful) this.reset()"
                 hx-disabled-elt="find button"
             {
                 div class="flex flex-col gap-3" {

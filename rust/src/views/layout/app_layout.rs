@@ -10,13 +10,14 @@ pub fn create_app_layout(content: Markup) -> Markup {
                 link rel="stylesheet" href="/assets/css/main.css";
                 script src="/assets/js/htmx.js" defer {};
                 script src="/assets/js/script.js" defer {};
+                script src="/assets/js/nprogress.js" defer {};
                 link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" {};
             }
-            body hx-boost="true" {
+            body hx-boost="true" hx-history="false" {
                 (content)
                 div id="toast" {}
             }
-            
+
         }
     }
 }

@@ -53,19 +53,17 @@ pub async fn auth_user(
             if let Some(user) = user {
                 match user.role.as_str() {
                     "admin" => match request.uri().path() {
-                        "/auth/login" | "/auth/register" => {
-                            Ok(redirect_307_no_cache("/admin/dashboard"))
-                        }
+                        "/auth/login" | "/auth/register" => Ok(redirect_307("/admin/dashboard")),
                         _ => {
                             if request.uri().path().contains("/shop") {
-                                return Ok(redirect_307_no_cache("/admin/dashboard"));
+                                return Ok(redirect_307("/admin/dashboard"));
                             }
 
                             Ok(next.run(request).await.into_response())
                         }
                     },
                     "user" => match request.uri().path() {
-                        "/auth/login" | "/auth/register" => Ok(redirect_307_no_cache("/shop/home")),
+                        "/auth/login" | "/auth/register" => Ok(redirect_307("/shop/home")),
                         _ => {
                             if request.uri().path().contains("/admin") {
                                 return Err(AppError::new(
@@ -88,7 +86,7 @@ pub async fn auth_user(
             } else {
                 match request.uri().path() {
                     "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
-                    _ => Ok(redirect_307_no_cache("/auth/login")),
+                    _ => Ok(redirect_307("/auth/login")),
                 }
             }
         } else {
@@ -99,21 +97,20 @@ pub async fn auth_user(
                 .max_age(cookie::time::Duration::minutes(0))
                 .into();
             let cookies = CookieJar::new().add(token_cookie);
-            Ok((cookies, redirect_307_no_cache("/auth/login")).into_response())
+            Ok((cookies, redirect_307("/auth/login")).into_response())
         }
     } else {
         match request.uri().path() {
             "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
-            _ => Ok(redirect_307_no_cache("/auth/login")),
+            _ => Ok(redirect_307("/auth/login")),
         }
     }
 }
 
-fn redirect_307_no_cache(location: &str) -> Response {
+fn redirect_307(location: &str) -> Response {
     Response::builder()
         .status(307)
         .header(header::LOCATION, location)
-        .header(header::CACHE_CONTROL, "no-cache")
         .body(axum::body::Body::empty())
         .unwrap()
 }

@@ -14,115 +14,7 @@
 //.....GGGGGGG....EEEEEEEEEEE.NNNN...NNNN..EEEEEEEEEEE.RRRR....RRRRRAAA.....AAAA.LLLLLLLLLL..
 //...........................................................................................*/
 
-*, ::before, ::after {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
-  --tw-contain-size:  ;
-  --tw-contain-layout:  ;
-  --tw-contain-paint:  ;
-  --tw-contain-style:  ;
-}
-
-::backdrop {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x:  ;
-  --tw-pan-y:  ;
-  --tw-pinch-zoom:  ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position:  ;
-  --tw-gradient-via-position:  ;
-  --tw-gradient-to-position:  ;
-  --tw-ordinal:  ;
-  --tw-slashed-zero:  ;
-  --tw-numeric-figure:  ;
-  --tw-numeric-spacing:  ;
-  --tw-numeric-fraction:  ;
-  --tw-ring-inset:  ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur:  ;
-  --tw-brightness:  ;
-  --tw-contrast:  ;
-  --tw-grayscale:  ;
-  --tw-hue-rotate:  ;
-  --tw-invert:  ;
-  --tw-saturate:  ;
-  --tw-sepia:  ;
-  --tw-drop-shadow:  ;
-  --tw-backdrop-blur:  ;
-  --tw-backdrop-brightness:  ;
-  --tw-backdrop-contrast:  ;
-  --tw-backdrop-grayscale:  ;
-  --tw-backdrop-hue-rotate:  ;
-  --tw-backdrop-invert:  ;
-  --tw-backdrop-opacity:  ;
-  --tw-backdrop-saturate:  ;
-  --tw-backdrop-sepia:  ;
-  --tw-contain-size:  ;
-  --tw-contain-layout:  ;
-  --tw-contain-paint:  ;
-  --tw-contain-style:  ;
-}
-
-/*! tailwindcss v3.4.12 | MIT License | https://tailwindcss.com*/
+/*! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com*/
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -605,6 +497,114 @@ body {
   color: hsl(var(--foreground));
 }
 
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
 .static {
   position: static;
 }
@@ -654,20 +654,12 @@ body {
   height: 2.5rem;
 }
 
-.h-6 {
-  height: 1.5rem;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
 
 .w-1\/2 {
   width: 50%;
-}
-
-.w-6 {
-  width: 1.5rem;
 }
 
 .w-64 {
@@ -684,16 +676,6 @@ body {
 
 .flex-1 {
   flex: 1 1 0%;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
 }
 
 .cursor-pointer {
@@ -746,20 +728,12 @@ body {
   text-wrap: pretty;
 }
 
-.rounded-full {
-  border-radius: 9999px;
-}
-
 .rounded-md {
   border-radius: calc(var(--radius) - 2px);
 }
 
 .border {
   border-width: 1px;
-}
-
-.border-4 {
-  border-width: 4px;
 }
 
 .border-b {
@@ -772,10 +746,6 @@ body {
 
 .border-input {
   border-color: hsl(var(--input));
-}
-
-.border-t-transparent {
-  border-top-color: transparent;
 }
 
 .bg-background {
@@ -890,10 +860,6 @@ body {
   color: hsl(var(--muted-foreground));
 }
 
-.text-primary {
-  color: hsl(var(--primary));
-}
-
 .text-primary-foreground {
   color: hsl(var(--primary-foreground));
 }
@@ -921,6 +887,14 @@ body {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+.button-icon {
+  filter: contrast(0) brightness(100);
+}
+
+.disable-link {
+  pointer-events: none;
 }
 
 /*..............................................................
@@ -1032,58 +1006,6 @@ body {
   }
 }
 
-/*.....................................................................................................
-//.IIIII.NNNN...NNNN..DDDDDDDDD...IIIII...CCCCCCC.......AAAAA...ATTTTTTTTTTT..OOOOOOO....ORRRRRRRRR....
-//.IIIII.NNNNN..NNNN..DDDDDDDDDD..IIIII..CCCCCCCCC......AAAAA...ATTTTTTTTTTTOOOOOOOOOO...ORRRRRRRRRR...
-//.IIIII.NNNNN..NNNN..DDDDDDDDDDD.IIIII.CCCCCCCCCCC....AAAAAA...ATTTTTTTTTTTOOOOOOOOOOO..ORRRRRRRRRRR..
-//.IIIII.NNNNNN.NNNN..DDDD...DDDD.IIIII.CCCC...CCCCC...AAAAAAA......TTTT...TOOOO...OOOOO.ORRR....RRRR..
-//.IIIII.NNNNNN.NNNN..DDDD....DDDDIIIIICCCC.....CCC...AAAAAAAA......TTTT...TOOO.....OOOO.ORRR....RRRR..
-//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC...........AAAAAAAA......TTTT..TTOO......OOOO.ORRRRRRRRRRR..
-//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC...........AAAA.AAAA.....TTTT..TTOO......OOOO.ORRRRRRRRRR...
-//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC..........AAAAAAAAAA.....TTTT..TTOO......OOOO.ORRRRRRRR.....
-//.IIIII.NNNNNNNNNNN..DDDD....DDDDIIIIICCCC.....CCC..AAAAAAAAAAA....TTTT...TOOO.....OOOO.ORRR.RRRRR....
-//.IIIII.NNNN.NNNNNN..DDDD...DDDDDIIIII.CCCC...CCCCC.AAAAAAAAAAA....TTTT...TOOOO...OOOOO.ORRR..RRRRR...
-//.IIIII.NNNN..NNNNN..DDDDDDDDDDD.IIIII.CCCCCCCCCCC.AAAA....AAAA....TTTT...TOOOOOOOOOOO..ORRR...RRRR...
-//.IIIII.NNNN..NNNNN..DDDDDDDDDD..IIIII..CCCCCCCCCC.AAAA.....AAAA...TTTT....OOOOOOOOOO...ORRR...RRRRR..
-//.IIIII.NNNN...NNNN..DDDDDDDDD...IIIII...CCCCCCC..CAAAA.....AAAA...TTTT......OOOOOOO....ORRR....RRRR..
-//.....................................................................................................*/
-
-.button-indicator {
-  display: none;
-}
-
-.button-icon {
-  filter: contrast(0) brightness(100);
-}
-
-.htmx-request .button-indicator {
-  display: flex;
-}
-
-.htmx-request.button-indicator {
-  display: flex;
-}
-
-.htmx-request .button-text {
-  display: none;
-}
-
-.htmx-request.button-text {
-  display: none;
-}
-
-.disable-link {
-  pointer-events: none;
-}
-
-.htmx-request .loading-modal {
-  display: flex;
-}
-
-.htmx-request.loading-modal {
-  display: flex;
-}
-
 /*.................................................................................
 //.DDDDDDDDD....RRRRRRRRRR......AAAAA..AAAWW..WWWWW...WWWWWEEEEEEEEEE.ERRRRRRRRR...
 //.DDDDDDDDDD...RRRRRRRRRRR.....AAAAA...AAWW..WWWWW..WWWW.WEEEEEEEEEE.ERRRRRRRRRR..
@@ -1193,6 +1115,92 @@ body {
 
 .drawer.is-visible .drawer__overlay {
   opacity: 0.5;
+}
+
+/*........................................................................................................
+//.PPPPPPPPP...PRRRRRRRRR.....OOOOOOO........GGGGGGG....GRRRRRRRRR...REEEEEEEEEE..SSSSSSS.....SSSSSSS.....
+//.PPPPPPPPPP..PRRRRRRRRRR...OOOOOOOOOO....GGGGGGGGGG...GRRRRRRRRRR..REEEEEEEEEE.ESSSSSSSS...SSSSSSSSS....
+//.PPPPPPPPPPP.PRRRRRRRRRR..ROOOOOOOOOOO..OGGGGGGGGGGG..GRRRRRRRRRR..REEEEEEEEEE.ESSSSSSSSS..SSSSSSSSSS...
+//.PPPP...PPPP.PRRR...RRRRR.ROOOO..OOOOO..OGGGG..GGGGG..GRRR...RRRRR.REEE.......EESSS..SSSS.SSSSS..SSSS...
+//.PPPP...PPPP.PRRR...RRRRRRROOO....OOOOOOOGGG....GGG...GRRR...RRRRR.REEE.......EESSS.......SSSSS.........
+//.PPPPPPPPPPP.PRRRRRRRRRR.RROO......OOOOOOGG...........GRRRRRRRRRR..REEEEEEEEE..ESSSSSS.....SSSSSSS......
+//.PPPPPPPPPP..PRRRRRRRRRR.RROO......OOOOOOGG..GGGGGGGG.GRRRRRRRRRR..REEEEEEEEE...SSSSSSSSS...SSSSSSSSS...
+//.PPPPPPPPP...PRRRRRRR....RROO......OOOOOOGG..GGGGGGGG.GRRRRRRR.....REEEEEEEEE.....SSSSSSS.....SSSSSSS...
+//.PPPP........PRRR.RRRR...RROOO....OOOOOOOGGG.GGGGGGGG.GRRR.RRRR....REEE..............SSSSS.......SSSSS..
+//.PPPP........PRRR..RRRR...ROOOO..OOOOO..OGGGG....GGGG.GRRR..RRRR...REEE.......EESS....SSSSSSSS....SSSS..
+//.PPPP........PRRR..RRRRR..ROOOOOOOOOOO..OGGGGGGGGGGG..GRRR..RRRRR..REEEEEEEEEEEESSSSSSSSSSSSSSSSSSSSSS..
+//.PPPP........PRRR...RRRRR..OOOOOOOOOO....GGGGGGGGGG...GRRR...RRRRR.REEEEEEEEEE.ESSSSSSSSS..SSSSSSSSSS...
+//.PPPP........PRRR....RRRR....OOOOOO........GGGGGGG....GRRR....RRRR.REEEEEEEEEE..SSSSSSSS....SSSSSSSS....
+//......................................................................................................*/
+
+/* Make clicks pass-through */
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #29d;
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+/* Fancy blur effect */
+
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  bottom: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: solid 2px transparent;
+  border-top-color: #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+  animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@keyframes nprogress-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .file\:border-0::file-selector-button {

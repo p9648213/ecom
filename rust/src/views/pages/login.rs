@@ -15,22 +15,21 @@ pub async fn login_view() -> Markup {
 
 pub fn login_form() -> Markup {
     html! {
-        div id="login-form" class="mx-auto w-full max-w-md space-y-6" {
+        div class="mx-auto w-full max-w-md space-y-6" {
             div class="text-center" {
                 h1 class="text-3xl font-bold tracking-tight text-foreground" { "Sign in to your account" }
                 div class="mt-2 flex justify-center" {
                     "Don't have an account?"
                     a id="register-link" href="/auth/register" class="font-medium text-pretty hover:underline ml-2" {
-                        span class="button-text" { "Register" }
-                        div class="button-indicator w-6 h-6 border-4 text-primary border-t-transparent rounded-full animate-spin flex" {}
+                        span { "Register" }
                     }
                 }
             }
-            form 
+            form
                 id="login-form"
                 hx-post="/auth/login"
                 hx-swap="none"
-                hx-on:submit="this.reset()"
+                "hx-on::after-request"="if(event.detail.successful) this.reset()"
                 hx-disabled-elt="find button"
             {
                 div class="flex flex-col gap-3" {

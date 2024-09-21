@@ -144,7 +144,6 @@ fn menuitems() -> Markup {
     }
 }
 
-
 fn menuitems_drawers() -> Markup {
     html! {
         nav class="mt-8 flex-col flex gap-2" {

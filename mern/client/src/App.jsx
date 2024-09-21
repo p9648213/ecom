@@ -31,7 +31,7 @@ function App() {
   }, [dispatch]);
 
   if(isLoading) {
-    return <Skeleton className="w-[800px] h-[600px] bg-black" />
+    return <Skeleton className="w-[800] h-[600px] bg-black" />
   }
 
   return (

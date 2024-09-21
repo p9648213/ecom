@@ -14,7 +14,7 @@ pub fn primary_button(text: Option<&str>, class: Option<&str>, icon: Option<&str
     let button_text = match text {
         Some(text) => {
             html! {
-              div class="button-text" { (text) }
+              div { (text) }
             }
         }
         None => html! {},
@@ -33,7 +33,6 @@ pub fn primary_button(text: Option<&str>, class: Option<&str>, icon: Option<&str
       button type="submit" class=(button_class) {
           (icon)
           (button_text)
-          div class="button-indicator w-6 h-6 border-4 text-primary border-t-transparent rounded-full animate-spin" {}
       }
     }
 }
