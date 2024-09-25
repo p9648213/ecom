@@ -14,6 +14,23 @@
 //....TTTT......OOOOOOO...OOAAA.....AAAA..SSSSSSS.......TTTT....
 //..............................................................
 
+export function escapeHtmlText(value) {
+  const stringValue = value.toString();
+  const entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+    "`": "&grave;",
+    "=": "&#x3D;",
+  };
+
+  const regex = /[&<>"'`=/]/g;
+  return stringValue.replace(regex, (match) => entityMap[match]);
+}
+
 function toast({ message = "", type = "info", duration = 3000 }) {
   const main = document.getElementById("toast");
 
@@ -41,7 +58,7 @@ function toast({ message = "", type = "info", duration = 3000 }) {
           ${icon}
       </div>
       <div class="toast__body">
-          <p class="toast__msg">${message}</p>
+          <p class="toast__msg">${escapeHtmlText(message)}</p>
       </div>
     `;
 
@@ -73,6 +90,7 @@ window.addEventListener("toastmessage", function (event) {
 //.HHHH...HHHH.....TTTT...TMMM.MMMMM.MMMMMXXXX..XXXX..
 //.HHHH...HHHH.....TTTT...TMMM.MMMMM.MMMMMXXX....XXX..
 //....................................................
+htmx.config.defaultSettleDelay = 0;
 
 window.addEventListener("htmx:beforeRequest", function (_) {
   NProgress.start();

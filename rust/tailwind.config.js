@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: ["./src/**/*.rs"],
+  content: ["./src/**/*.rs", "./assets/**/*.js"],
   theme: {
     extend: {
       borderRadius: {
@@ -53,5 +53,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
