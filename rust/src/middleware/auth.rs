@@ -100,16 +100,32 @@ pub async fn auth_user(
             Ok((cookies, redirect_307("/auth/login")).into_response())
         }
     } else {
-        match request.uri().path() {
-            "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
-            _ => Ok(redirect_307("/auth/login")),
+        let hx_current_url = request.headers().get("Hx-Current-Url");
+
+        match hx_current_url {
+            Some(hx_current_url) => {
+                let url = hx_current_url.to_str().unwrap_or("");
+                if url.contains("auth") {
+                    Ok(next.run(request).await.into_response())
+                } else {
+                    Ok(Response::builder()
+                        .status(StatusCode::NO_CONTENT)
+                        .header("Hx-Location", "/auth/login")
+                        .body(axum::body::Body::empty())
+                        .unwrap())
+                }
+            }
+            None => match request.uri().path() {
+                "/auth/login" | "/auth/register" => Ok(next.run(request).await.into_response()),
+                _ => Ok(redirect_307("/auth/login")),
+            },
         }
     }
 }
 
 fn redirect_307(location: &str) -> Response {
     Response::builder()
-        .status(307)
+        .status(StatusCode::TEMPORARY_REDIRECT)
         .header(header::LOCATION, location)
         .body(axum::body::Body::empty())
         .unwrap()

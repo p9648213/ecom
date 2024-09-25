@@ -14,7 +14,7 @@
 //....TTTT......OOOOOOO...OOAAA.....AAAA..SSSSSSS.......TTTT....
 //..............................................................
 
-export function escapeHtmlText(value) {
+function escapeHtmlText(value) {
   const stringValue = value.toString();
   const entityMap = {
     "&": "&amp;",

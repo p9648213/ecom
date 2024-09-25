@@ -6,6 +6,7 @@ pub fn create_admin_layout(content: Markup) -> Markup {
     html! {
       script src="/assets/js/drawer.js" defer type="module" {};
       script src="/assets/js/admin.js" defer type="module" {};
+      script src="/assets/js/admin_product.js" defer type="module" {};
       title { "Admin" }
       div class="flex min-h-screen w-full" {
         (admin_sidebar())

@@ -19,7 +19,7 @@ pub fn image_upload() -> Markup {
                 (file_icon())
               }
               p class="text-sm font-medium" {}
-              button {
+              button id="clear-image-button" {
                 (x_icon())
               }
             }
