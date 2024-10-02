@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth/auth-routes.js";
+import adminProductRouter from "./routes/admin/product-routes.js";
 
 mongoose
   .connect(
@@ -33,5 +34,6 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRouter);
+app.use("/api/admin/products", adminProductRouter);
 
 app.listen(PORT, () => console.log(`Server is now running on port ${PORT}`));

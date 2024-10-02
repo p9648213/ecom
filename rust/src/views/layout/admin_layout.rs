@@ -12,7 +12,7 @@ pub fn create_admin_layout(content: Markup) -> Markup {
         (admin_sidebar())
         div class="flex flex-1 flex-col" {
           (admin_header())
-          main class="flex-1 flex bg-muted/40 p-4 md:p-6" {
+          main class="flex-1 flex-col flex bg-muted/40 p-4 md:p-6" {
             (content)
           }
         }
