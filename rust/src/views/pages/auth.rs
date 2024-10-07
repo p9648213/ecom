@@ -49,8 +49,8 @@ pub fn login_form() -> Markup {
                 hx-disabled-elt="find button"
             {
                 div class="flex flex-col gap-3" {
-                    (input_with_label("Email", "email", "email", "email", "Enter your email"))
-                    (input_with_label("Password", "password", "password", "password", "Enter your password"))
+                    (input_with_label("Email", "email", "email", "email", "Enter your email", ""))
+                    (input_with_label("Password", "password", "password", "password", "Enter your password", ""))
                 }
                 (primary_button(Some("Sign In"), Some("w-full mt-3"), None))
             }
@@ -102,9 +102,9 @@ pub fn register_form() -> Markup {
                 hx-disabled-elt="find button"
             {
                 div class="flex flex-col gap-3" {
-                    (input_with_label("Username", "text", "username", "username", "Enter your username"))
-                    (input_with_label("Email", "email", "email", "email", "Enter your email"))
-                    (input_with_label("Password", "password", "password", "password", "Enter your password"))
+                    (input_with_label("Username", "text", "username", "username", "Enter your username", ""))
+                    (input_with_label("Email", "email", "email", "email", "Enter your email", ""))
+                    (input_with_label("Password", "password", "password", "password", "Enter your password", ""))
                 }
                 (primary_button(Some("Sign Up"), Some("w-full mt-3"), None))
             }

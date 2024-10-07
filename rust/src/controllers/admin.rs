@@ -1,17 +1,17 @@
+use std::collections::HashMap;
+
 use axum::{
     body::Bytes,
     extract::{Path, State},
-    http::HeaderMap,
+    http::{HeaderMap, StatusCode},
     response::IntoResponse,
 };
 use axum_extra::extract::Multipart;
-use maud::Markup;
 use sqlx::{Pool, Sqlite};
 
 use crate::{
     models::{image::Image, product::Product},
     utilities::app_error::AppError,
-    views::pages::admin::product_tile,
 };
 
 #[derive(Debug)]
@@ -45,9 +45,9 @@ pub struct AddProductForm {
 //.........................................
 
 pub async fn add_product(
-    State(pool): State<Pool<Sqlite>>,
+    pool: Pool<Sqlite>,
     mut mutipart_form: Multipart,
-) -> Result<Markup, AppError> {
+) -> Result<Product, AppError> {
     let mut add_product_form = AddProductForm {
         title: String::new(),
         description: String::new(),
@@ -61,6 +61,16 @@ pub async fn add_product(
         image_content_type: String::new(),
     };
 
+    let mut form_fields: HashMap<&str, &mut String> = HashMap::new();
+
+    form_fields.insert("title", &mut add_product_form.title);
+    form_fields.insert("description", &mut add_product_form.description);
+    form_fields.insert("category", &mut add_product_form.category);
+    form_fields.insert("brand", &mut add_product_form.brand);
+    form_fields.insert("price", &mut add_product_form.price);
+    form_fields.insert("sale_price", &mut add_product_form.sale_price);
+    form_fields.insert("total_stock", &mut add_product_form.total_stock);
+
     while let Some(field) = mutipart_form.next_field().await.map_err(|error| {
         tracing::error!("Failed to get multipart field: {}", error);
         AppError::new(
@@ -70,62 +80,23 @@ pub async fn add_product(
     })? {
         let name = field.name().unwrap_or("").to_string();
 
-        if name == "title" {
-            add_product_form.title = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get title text: {}", error);
+        if let Some(form_field) = form_fields.get_mut(name.as_str()) {
+            let field_content = field.text().await.map_err(|error| {
+                tracing::error!("Failed to get text for {name}: {}", error);
                 AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    StatusCode::INTERNAL_SERVER_ERROR,
                     "Server Error".to_string(),
                 )
             })?;
-        } else if name == "description" {
-            add_product_form.description = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get description text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
-        } else if name == "category" {
-            add_product_form.category = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get category text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
-        } else if name == "brand" {
-            add_product_form.brand = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get brand text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
-        } else if name == "price" {
-            add_product_form.price = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get price text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
-        } else if name == "sale_price" {
-            add_product_form.sale_price = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get sale_price text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
-        } else if name == "total_stock" {
-            add_product_form.total_stock = field.text().await.map_err(|error| {
-                tracing::error!("Failed to get total_stock text: {}", error);
-                AppError::new(
-                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                    "Server Error".to_string(),
-                )
-            })?;
+
+            if field_content.is_empty() {
+                return Err(AppError::new(
+                    StatusCode::BAD_REQUEST,
+                    format!("Field {name} is empty"),
+                ));
+            }
+
+            **form_field = field_content;
         } else if name == "image" {
             if let Some(file_name) = field.file_name() {
                 add_product_form.image_name = file_name.to_string();
@@ -192,7 +163,7 @@ pub async fn add_product(
         )
     })?;
 
-    Ok(product_tile(new_product))
+    Ok(new_product)
 }
 
 //....................................................
@@ -215,7 +186,7 @@ pub async fn get_all_products(pool: &Pool<Sqlite>) -> Result<Vec<Product>, AppEr
     let products = sqlx::query_as!(
         Product,
         r#"
-        SELECT * FROM products
+        SELECT * FROM products ORDER BY id DESC
         "#
     )
     .fetch_all(pool)
@@ -278,3 +249,60 @@ pub async fn get_image_by_product_id(
 
     Ok((headers, image.image))
 }
+
+pub async fn get_product_by_id(pool: Pool<Sqlite>, product_id: i32) -> Result<Product, AppError> {
+    let product = sqlx::query_as!(
+        Product,
+        r#"
+        SELECT * FROM products WHERE id = $1
+        "#,
+        product_id
+    )
+    .fetch_one(&pool)
+    .await
+    .map_err(|err| {
+        tracing::error!("Failed to get product: {}", err);
+        AppError::new(
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error".to_string(),
+        )
+    })?;
+
+    Ok(product)
+}
+
+//..........................................................................
+//.UUUU...UUUU..PPPPPPPPP...PDDDDDDDD.......AAAAA...AAATTTTTTTTTTEEEEEEEEE..
+//.UUUU...UUUU..PPPPPPPPPP..PDDDDDDDDD......AAAAA...AAATTTTTTTTTTEEEEEEEEE..
+//.UUUU...UUUU..PPPPPPPPPPP.PDDDDDDDDDD....AAAAAA...AAATTTTTTTTTTEEEEEEEEE..
+//.UUUU...UUUU..PPPP...PPPP.PDDD...DDDD....AAAAAAA......TTTT...TTEE.........
+//.UUUU...UUUU..PPPP...PPPP.PDDD....DDDD..AAAAAAAA......TTTT...TTEE.........
+//.UUUU...UUUU..PPPPPPPPPPP.PDDD....DDDD..AAAAAAAA......TTTT...TTEEEEEEEEE..
+//.UUUU...UUUU..PPPPPPPPPP..PDDD....DDDD..AAAA.AAAA.....TTTT...TTEEEEEEEEE..
+//.UUUU...UUUU..PPPPPPPPP...PDDD....DDDD.DAAAAAAAAA.....TTTT...TTEEEEEEEEE..
+//.UUUU...UUUU..PPPP........PDDD....DDDD.DAAAAAAAAAA....TTTT...TTEE.........
+//.UUUU...UUUU..PPPP........PDDD...DDDDD.DAAAAAAAAAA....TTTT...TTEE.........
+//.UUUUUUUUUUU..PPPP........PDDDDDDDDDD.DDAA....AAAA....TTTT...TTEEEEEEEEE..
+//..UUUUUUUUU...PPPP........PDDDDDDDDD..DDAA.....AAAA...TTTT...TTEEEEEEEEE..
+//...UUUUUUU....PPPP........PDDDDDDDD..DDDAA.....AAAA...TTTT...TTEEEEEEEEE..
+//..........................................................................
+
+pub async fn update_product_by_id() {}
+
+//.........................................................................
+//.DDDDDDDDD....EEEEEEEEEEE.ELLL.......EEEEEEEEEEE.ETTTTTTTTTTTEEEEEEEEEE..
+//.DDDDDDDDDD...EEEEEEEEEEE.ELLL.......EEEEEEEEEEE.ETTTTTTTTTTTEEEEEEEEEE..
+//.DDDDDDDDDDD..EEEEEEEEEEE.ELLL.......EEEEEEEEEEE.ETTTTTTTTTTTEEEEEEEEEE..
+//.DDDD...DDDD..EEEE........ELLL.......EEEE...........TTTT....TEEE.........
+//.DDDD....DDDD.EEEE........ELLL.......EEEE...........TTTT....TEEE.........
+//.DDDD....DDDD.EEEEEEEEEE..ELLL.......EEEEEEEEEE.....TTTT....TEEEEEEEEE...
+//.DDDD....DDDD.EEEEEEEEEE..ELLL.......EEEEEEEEEE.....TTTT....TEEEEEEEEE...
+//.DDDD....DDDD.EEEEEEEEEE..ELLL.......EEEEEEEEEE.....TTTT....TEEEEEEEEE...
+//.DDDD....DDDD.EEEE........ELLL.......EEEE...........TTTT....TEEE.........
+//.DDDD...DDDDD.EEEE........ELLL.......EEEE...........TTTT....TEEE.........
+//.DDDDDDDDDDD..EEEEEEEEEEE.ELLLLLLLLL.EEEEEEEEEEE....TTTT....TEEEEEEEEEE..
+//.DDDDDDDDDD...EEEEEEEEEEE.ELLLLLLLLL.EEEEEEEEEEE....TTTT....TEEEEEEEEEE..
+//.DDDDDDDDD....EEEEEEEEEEE.ELLLLLLLLL.EEEEEEEEEEE....TTTT....TEEEEEEEEEE..
+//.........................................................................
+
+pub async fn delete_product_by_id() {}

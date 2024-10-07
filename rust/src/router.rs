@@ -1,8 +1,10 @@
 use crate::config::Config;
-use crate::controllers::admin::{add_product, get_image_by_product_id};
+use crate::controllers::admin::get_image_by_product_id;
 use crate::controllers::auth::{login_user, register_user};
 use crate::middleware::auth::auth_user;
-use crate::views::pages::admin::{admin_contents, admin_product_list, admin_view};
+use crate::views::pages::admin::{
+    admin_contents, admin_product_list, admin_view, edit_product, new_product,
+};
 use crate::views::pages::auth::{login_view, register_view};
 use crate::views::pages::home::home_view;
 use axum::extract::FromRef;
@@ -37,8 +39,9 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
         .route("/shop/home", get(home_view))
         .route("/admin/:admin_path", get(admin_view))
         .route("/admin/contents/:path", get(admin_contents))
-        .route("/admin/products/add", post(add_product))
+        .route("/admin/products/add", post(new_product))
         .route("/admin/products/all", get(admin_product_list))
+        .route("/admin/products/:id/edit", get(edit_product))
         .route(
             "/admin/products/:product_id/image",
             get(get_image_by_product_id),

@@ -2,11 +2,12 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
 };
+use axum_extra::extract::Multipart;
 use maud::{html, Markup};
 use sqlx::{Pool, Sqlite};
 
 use crate::{
-    controllers::admin::get_all_products,
+    controllers::admin::{add_product, get_all_products, get_product_by_id},
     models::product::Product,
     utilities::app_error::AppError,
     views::{
@@ -315,7 +316,7 @@ fn admin_products() -> Markup {
     html! {
         div id="admin-contents" {
             div class="mb-5 w-full flex justify-end" {
-                div data-drawer-trigger aria-controls="products-drawer"  {
+                div hx-on:click=r#"window.resetAddProductForm()"# data-drawer-trigger aria-controls="products-drawer" {
                     (primary_button(Some("Add New Product"), None, None))
                 }
             }
@@ -341,7 +342,7 @@ fn products_drawer() -> Markup {
             div class="drawer__overlay" data-drawer-close tabindex="-1" {}
             div class="drawer__wrapper" style="width: 26rem" {
                 div class="drawer__header" {
-                    div class="flex gap-3" {
+                    div id="products-drawer-header" class="flex gap-3" {
                         "Add New Product"
                     }
                     button class="drawer__close" data-drawer-close aria-label="Close Drawer" {}
@@ -359,25 +360,66 @@ fn products_drawer() -> Markup {
 fn add_product_form() -> Markup {
     html! {
         form
+            id="add-product-form"
             hx-post="/admin/products/add"
             hx-target="#admin-product-list"
-            hx-on--after-request="document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape'}));"
             hx-swap="afterbegin"
             enctype="multipart/form-data"
         {
             div class="flex flex-col gap-3" {
                 (image_upload("image"))
-                (input_with_label("Title", "text", "title", "add-product-title", "Enter product title"))
-                (text_area("Description", "description", "add-product-description", "Enter product description"))
-                (select("Category", "category", "add-product-category", CATEGORIES_SELECT_OPTIONS))
-                (select("Brand", "brand", "add-product-brand", BRAND_SELECT_OPTIONS))
-                (input_with_label("Price", "number", "price", "add-product-price", "Enter product price"))
-                (input_with_label("Sale Price", "number", "sale_price", "add-product-sale-price", "Enter sale price (optional)"))
-                (input_with_label("Total Stock", "number", "total_stock", "add-product-total-stock", "Enter total stock"))
+                (input_with_label("Title", "text", "title", "add-product-title", "Enter product title", ""))
+                (text_area("Description", "description", "add-product-description", "Enter product description", ""))
+                (select("Category", "category", "add-product-category", CATEGORIES_SELECT_OPTIONS, CATEGORIES_SELECT_OPTIONS[0].value))
+                (select("Brand", "brand", "add-product-brand", BRAND_SELECT_OPTIONS, BRAND_SELECT_OPTIONS[0].value))
+                (input_with_label("Price", "number", "price", "add-product-price", "Enter product price", ""))
+                (input_with_label("Sale Price", "number", "sale_price", "add-product-sale-price", "Enter sale price (optional)", ""))
+                (input_with_label("Total Stock", "number", "total_stock", "add-product-total-stock", "Enter total stock", ""))
                 (primary_button(Some("Add"), Some("mt-2 w-full"), None))
             }
         }
     }
+}
+
+pub async fn new_product(
+    State(pool): State<Pool<Sqlite>>,
+    mutipart_form: Multipart,
+) -> Result<Markup, AppError> {
+    let new_product = add_product(pool, mutipart_form).await?;
+    Ok(product_tile(new_product))
+}
+
+pub async fn edit_product(
+    State(pool): State<Pool<Sqlite>>,
+    Path(product_id): Path<i32>,
+) -> Result<Markup, AppError> {
+    let product = get_product_by_id(pool, product_id).await?;
+    let patch_link = format!("/admin/products/{}", product.id);
+    let target_id = format!("product-{}", product.id);
+
+    Ok(html! {
+        form
+            id="add-product-form"
+            hx-patch=(patch_link)
+            hx-target=(target_id)
+        {
+            div class="flex flex-col gap-3" {
+                (image_upload("image"))
+                (input_with_label("Title", "text", "title", "add-product-title", "Enter product title", product.title.as_str()))
+                (text_area("Description", "description", "add-product-description", "Enter product description", product.description.as_str()))
+                (select("Category", "category", "add-product-category", CATEGORIES_SELECT_OPTIONS, product.category.as_str()))
+                (select("Brand", "brand", "add-product-brand", BRAND_SELECT_OPTIONS, product.brand.as_str()))
+                (input_with_label("Price", "number", "price", "add-product-price", "Enter product price", product.price.to_string().as_str()))
+                (input_with_label("Sale Price", "number", "sale_price", "add-product-sale-price", "Enter sale price (optional)", product.sale_price.to_string().as_str()))
+                (input_with_label("Total Stock", "number", "total_stock", "add-product-total-stock", "Enter total stock", product.total_stock.to_string().as_str()))
+                (primary_button(Some("Edit"), Some("mt-2 w-full"), None))
+            }
+        }
+        div type="submit" hx-swap-oob="true" id="products-drawer-header" class="flex gap-3" {
+            "Edit Product"
+        }
+
+    })
 }
 
 pub async fn admin_product_list(State(pool): State<Pool<Sqlite>>) -> Result<Markup, AppError> {
@@ -401,37 +443,55 @@ pub async fn admin_product_list(State(pool): State<Pool<Sqlite>>) -> Result<Mark
 }
 
 pub fn product_tile(product: Product) -> Markup {
+    let edit_product_link = format!("/admin/products/{}/edit", product.id);
+    let product_div_id = format!("product-{}", product.id);
+
     html! {
         div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm mx-auto" {
             div {
-                div class="relative" {
-                    img class="w-full h-[300px] object-contain rounded-t-lg" src=(format!("/admin/products/{}/image", product.id)) alt=(product.title) {}
-                }
-                div class="p-6 pt-0" {
-                    h2 class="text-xl font-bold mb-2 mt-2" {
-                        (product.title)
-                    }
-                    div class="flex justify-between items-center mb-2" {
-                        @if product.sale_price > 0 {
-                            span class="line-through" {
-                                (product.price)
-                            }
-                        }@else {
-                            span class="text-lg font-semibold text-primary" {
-                                (product.price)
-                            }
-                        }
-
-                        @if product.sale_price > 0 {
-                            span class="text-lg font-bold" {
-                                (product.sale_price)
-                            }
-                        }
-                    }
+                div id=(product_div_id) {
+                    (product_detail(product))
                 }
                 div class="flex items-center p-6 pt-0 justify-between" {
-                    (primary_button(Some("Edit"), None, None))
+                    div
+                        hx-get=(edit_product_link)
+                        hx-swap="outerHTML"
+                        hx-target="#add-product-form"
+                        data-drawer-trigger
+                        aria-controls="products-drawer" {
+                            (primary_button(Some("Edit"), None, None))
+                    }
                     (primary_button(Some("Delete"), None, None))
+                }
+            }
+        }
+    }
+}
+
+pub fn product_detail(product: Product) -> Markup {
+    html! {
+        div class="relative" {
+            img class="w-full h-[300px] object-contain rounded-t-lg" onerror=r#"this.onerror=null;this.src="/assets/images/noimage.jpg""# src=(format!("/admin/products/{}/image", product.id)) alt=(product.title) {}
+        }
+        div class="p-6 pt-0" {
+            h2 class="text-xl font-bold mb-2 mt-2" {
+                (product.title)
+            }
+            div class="flex justify-between items-center mb-2" {
+                @if product.sale_price > 0 {
+                    span class="line-through" {
+                        (product.price)
+                    }
+                }@else {
+                    span class="text-lg font-semibold text-primary" {
+                        (product.price)
+                    }
+                }
+
+                @if product.sale_price > 0 {
+                    span class="text-lg font-bold" {
+                        (product.sale_price)
+                    }
                 }
             }
         }
