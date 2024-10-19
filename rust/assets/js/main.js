@@ -108,8 +108,6 @@ window.addEventListener("htmx:beforeRequest", function (_) {
 });
 
 window.addEventListener("htmx:afterRequest", function (event) {
-  NProgress.done();
-
   const loginLinkEl = document.getElementById("login-link");
   const registerLinkEl = document.getElementById("register-link");
 
@@ -127,6 +125,10 @@ window.addEventListener("htmx:afterRequest", function (event) {
       type: "error",
     });
   }
+});
+
+window.addEventListener("htmx:afterSettle", function () {
+  NProgress.done();
 });
 
 window.addEventListener("htmx:historyRestore", (_) => {
