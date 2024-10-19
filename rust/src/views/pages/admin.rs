@@ -7,7 +7,7 @@ use maud::{html, Markup};
 use sqlx::{Pool, Sqlite};
 
 use crate::{
-    controllers::admin::{add_product, get_all_products, get_product_by_id},
+    controllers::admin::{add_product, get_all_products, get_product_by_id, update_product_by_id},
     models::product::Product,
     utilities::app_error::AppError,
     views::{
@@ -364,6 +364,7 @@ fn add_product_form() -> Markup {
             hx-post="/admin/products/add"
             hx-target="#admin-product-list"
             hx-swap="afterbegin"
+            hx-on--after-request="if(event.detail.successful === true) {document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))}"
             enctype="multipart/form-data"
         {
             div class="flex flex-col gap-3" {
@@ -389,37 +390,48 @@ pub async fn new_product(
     Ok(product_tile(new_product))
 }
 
-pub async fn edit_product(
+pub async fn edit_product_form(
     State(pool): State<Pool<Sqlite>>,
     Path(product_id): Path<i32>,
 ) -> Result<Markup, AppError> {
     let product = get_product_by_id(pool, product_id).await?;
-    let patch_link = format!("/admin/products/{}", product.id);
-    let target_id = format!("product-{}", product.id);
+    let put_link = format!("/admin/products/{}", product.id);
+    let target_id = format!("#product-{}", product.id);
 
     Ok(html! {
         form
             id="add-product-form"
-            hx-patch=(patch_link)
+            hx-put=(put_link)
             hx-target=(target_id)
+            hx-swap="outerHTML"
+            hx-on--after-request="if(event.detail.successful === true) {document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))}"
+            enctype="multipart/form-data"
         {
             div class="flex flex-col gap-3" {
                 (image_upload("image"))
-                (input_with_label("Title", "text", "title", "add-product-title", "Enter product title", product.title.as_str()))
-                (text_area("Description", "description", "add-product-description", "Enter product description", product.description.as_str()))
-                (select("Category", "category", "add-product-category", CATEGORIES_SELECT_OPTIONS, product.category.as_str()))
-                (select("Brand", "brand", "add-product-brand", BRAND_SELECT_OPTIONS, product.brand.as_str()))
-                (input_with_label("Price", "number", "price", "add-product-price", "Enter product price", product.price.to_string().as_str()))
-                (input_with_label("Sale Price", "number", "sale_price", "add-product-sale-price", "Enter sale price (optional)", product.sale_price.to_string().as_str()))
-                (input_with_label("Total Stock", "number", "total_stock", "add-product-total-stock", "Enter total stock", product.total_stock.to_string().as_str()))
+                (input_with_label("Title", "text", "title", "edit-product-title", "Enter product title", product.title.as_str()))
+                (text_area("Description", "description", "edit-product-description", "Enter product description", product.description.as_str()))
+                (select("Category", "category", "edit-product-category", CATEGORIES_SELECT_OPTIONS, product.category.as_str()))
+                (select("Brand", "brand", "edit-product-brand", BRAND_SELECT_OPTIONS, product.brand.as_str()))
+                (input_with_label("Price", "number", "price", "edit-product-price", "Enter product price", product.price.to_string().as_str()))
+                (input_with_label("Sale Price", "number", "sale_price", "edit-product-sale-price", "Enter sale price (optional)", product.sale_price.to_string().as_str()))
+                (input_with_label("Total Stock", "number", "total_stock", "edit-product-total-stock", "Enter total stock", product.total_stock.to_string().as_str()))
                 (primary_button(Some("Edit"), Some("mt-2 w-full"), None))
             }
         }
         div type="submit" hx-swap-oob="true" id="products-drawer-header" class="flex gap-3" {
             "Edit Product"
         }
-
     })
+}
+
+pub async fn edit_product(
+    Path(product_id): Path<i32>,
+    State(pool): State<Pool<Sqlite>>,
+    mutipart_form: Multipart,
+) -> Result<Markup, AppError> {
+    let product = update_product_by_id(product_id, pool, mutipart_form).await?;
+    Ok(product_tile(product))
 }
 
 pub async fn admin_product_list(State(pool): State<Pool<Sqlite>>) -> Result<Markup, AppError> {
@@ -447,9 +459,9 @@ pub fn product_tile(product: Product) -> Markup {
     let product_div_id = format!("product-{}", product.id);
 
     html! {
-        div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm mx-auto" {
+        div id=(product_div_id) class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm mx-auto" {
             div {
-                div id=(product_div_id) {
+                div  {
                     (product_detail(product))
                 }
                 div class="flex items-center p-6 pt-0 justify-between" {

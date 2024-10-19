@@ -67,13 +67,4 @@ function resetAddProductForm() {
   htmx.process(addProductForm);
 }
 
-document.addEventListener("htmx:afterRequest", (event) => {
-  if (
-    event.detail.pathInfo.requestPath === "/admin/products/add" &&
-    event.detail.successful === true
-  ) {
-    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
-  }
-});
-
 window.resetAddProductForm = resetAddProductForm;

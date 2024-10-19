@@ -236,17 +236,6 @@ pub async fn get_image_by_product_id(
         })?,
     );
 
-    headers.insert(
-        "Cache-Control",
-        "max-age=86400".parse().map_err(|error| {
-            tracing::error!("Failed to parse cache control: {}", error);
-            AppError::new(
-                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                "Server Error".to_string(),
-            )
-        })?,
-    );
-
     Ok((headers, image.image))
 }
 
@@ -287,7 +276,129 @@ pub async fn get_product_by_id(pool: Pool<Sqlite>, product_id: i32) -> Result<Pr
 //...UUUUUUU....PPPP........PDDDDDDDD..DDDAA.....AAAA...TTTT...TTEEEEEEEEE..
 //..........................................................................
 
-pub async fn update_product_by_id() {}
+pub async fn update_product_by_id(
+    product_id: i32,
+    pool: Pool<Sqlite>,
+    mut mutipart_form: Multipart,
+) -> Result<Product, AppError> {
+    let mut edit_product_form = AddProductForm {
+        title: String::new(),
+        description: String::new(),
+        category: String::new(),
+        brand: String::new(),
+        price: String::new(),
+        sale_price: String::new(),
+        total_stock: String::new(),
+        image_data: Bytes::new(),
+        image_name: String::new(),
+        image_content_type: String::new(),
+    };
+
+    let mut form_fields: HashMap<&str, &mut String> = HashMap::new();
+
+    form_fields.insert("title", &mut edit_product_form.title);
+    form_fields.insert("description", &mut edit_product_form.description);
+    form_fields.insert("category", &mut edit_product_form.category);
+    form_fields.insert("brand", &mut edit_product_form.brand);
+    form_fields.insert("price", &mut edit_product_form.price);
+    form_fields.insert("sale_price", &mut edit_product_form.sale_price);
+    form_fields.insert("total_stock", &mut edit_product_form.total_stock);
+
+    while let Some(field) = mutipart_form.next_field().await.map_err(|error| {
+        tracing::error!("Failed to get multipart field: {}", error);
+        AppError::new(
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error".to_string(),
+        )
+    })? {
+        let name = field.name().unwrap_or("").to_string();
+
+        if let Some(form_field) = form_fields.get_mut(name.as_str()) {
+            let field_content = field.text().await.map_err(|error| {
+                tracing::error!("Failed to get text for {name}: {}", error);
+                AppError::new(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "Server Error".to_string(),
+                )
+            })?;
+
+            if field_content.is_empty() {
+                return Err(AppError::new(
+                    StatusCode::BAD_REQUEST,
+                    format!("Field {name} is empty"),
+                ));
+            }
+
+            **form_field = field_content;
+        } else if name == "image" {
+            if let Some(file_name) = field.file_name() {
+                edit_product_form.image_name = file_name.to_string();
+                edit_product_form.image_content_type =
+                    if let Some(content_type) = field.content_type() {
+                        content_type.to_string()
+                    } else {
+                        "application/octet-stream".to_string()
+                    };
+                edit_product_form.image_data = field.bytes().await.map_err(|error| {
+                    tracing::error!("Failed to get image bytes: {}", error);
+                    AppError::new(
+                        axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                        "Server Error".to_string(),
+                    )
+                })?
+            }
+        }
+    }
+
+    let edit_product = sqlx::query_as!(
+        Product,
+        r#"
+        UPDATE products SET title = $1, description = $2, category = $3, brand = $4, price = $5, sale_price = $6, total_stock = $7 WHERE id = $8 RETURNING *
+        "#,
+        edit_product_form.title,
+        edit_product_form.description,
+        edit_product_form.category,
+        edit_product_form.brand,
+        edit_product_form.price,
+        edit_product_form.sale_price,
+        edit_product_form.total_stock,
+        product_id,
+    )
+    .fetch_one(&pool)
+    .await
+    .map_err(|err| {
+        tracing::error!("Failed to update product: {}", err);
+        AppError::new(
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error".to_string(),
+        )
+    })?;
+
+    if edit_product_form.image_data.len() > 0 {
+        let image_blob = edit_product_form.image_data.as_ref();
+
+        sqlx::query!(
+            r#"
+            UPDATE images SET name = $2, content_type = $3, image = $4 WHERE product_id = $1
+            "#,
+            edit_product.id,
+            edit_product_form.image_name,
+            edit_product_form.image_content_type,
+            image_blob,
+        )
+        .execute(&pool)
+        .await
+        .map_err(|err| {
+            tracing::error!("Failed to insert product image: {}", err);
+            AppError::new(
+                axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                "Server Error".to_string(),
+            )
+        })?;
+    }
+
+    Ok(edit_product)
+}
 
 //.........................................................................
 //.DDDDDDDDD....EEEEEEEEEEE.ELLL.......EEEEEEEEEEE.ETTTTTTTTTTTEEEEEEEEEE..
