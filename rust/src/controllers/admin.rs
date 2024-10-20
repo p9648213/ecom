@@ -416,4 +416,41 @@ pub async fn update_product_by_id(
 //.DDDDDDDDD....EEEEEEEEEEE.ELLLLLLLLL.EEEEEEEEEEE....TTTT....TEEEEEEEEEE..
 //.........................................................................
 
-pub async fn delete_product_by_id() {}
+pub async fn delete_product_by_id(
+    Path(product_id): Path<i32>,
+    State(pool): State<Pool<Sqlite>>,
+) -> Result<(), AppError> {
+    sqlx::query!(
+        r#"
+        DELETE FROM images WHERE product_id = $1
+        "#,
+        product_id
+    )
+    .execute(&pool)
+    .await
+    .map_err(|err| {
+        tracing::error!("Failed to delete product images: {}", err);
+        AppError::new(
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error".to_string(),
+        )
+    })?;
+
+    sqlx::query!(
+        r#"
+        DELETE FROM products WHERE id = $1
+        "#,
+        product_id
+    )
+    .execute(&pool)
+    .await
+    .map_err(|err| {
+        tracing::error!("Failed to delete product: {}", err);
+        AppError::new(
+            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+            "Server Error".to_string(),
+        )
+    })?;
+
+    Ok(())
+}

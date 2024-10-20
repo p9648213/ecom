@@ -108,8 +108,21 @@ window.addEventListener("htmx:beforeRequest", function (_) {
 });
 
 window.addEventListener("htmx:afterRequest", function (event) {
+  console.log(event);
+
   const loginLinkEl = document.getElementById("login-link");
   const registerLinkEl = document.getElementById("register-link");
+
+  if (event?.detail?.successful === false) {
+    NProgress.done();
+  }
+
+  if (
+    event?.detail?.successful === true &&
+    event?.detail?.requestConfig?.verb === "delete"
+  ) {
+    NProgress.done();
+  }
 
   if (loginLinkEl) {
     loginLinkEl.classList.remove("disable-link");

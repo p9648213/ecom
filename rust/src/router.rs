@@ -1,5 +1,5 @@
 use crate::config::Config;
-use crate::controllers::admin::get_image_by_product_id;
+use crate::controllers::admin::{delete_product_by_id, get_image_by_product_id};
 use crate::controllers::auth::{login_user, register_user};
 use crate::middleware::auth::auth_user;
 use crate::views::pages::admin::{
@@ -10,7 +10,7 @@ use crate::views::pages::home::home_view;
 use axum::extract::FromRef;
 use axum::http::header::CACHE_CONTROL;
 use axum::http::HeaderValue;
-use axum::routing::put;
+use axum::routing::{delete, put};
 use axum::{
     routing::{get, post},
     Router,
@@ -48,6 +48,7 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
         .route("/admin/products/:id/edit", get(edit_product_form))
         .route("/admin/products/add", post(new_product))
         .route("/admin/products/:id", put(edit_product))
+        .route("/admin/products/:id", delete(delete_product_by_id))
         .route("/auth/register", get(register_view))
         .route("/auth/login", get(login_view))
         .route("/auth/register", post(register_user))

@@ -5,6 +5,7 @@ use axum::{
 };
 use axum_extra::extract::Multipart;
 use maud::{html, Markup};
+use serde::de;
 use sqlx::{Pool, Sqlite};
 
 use crate::{
@@ -449,7 +450,9 @@ pub async fn admin_product_list(
 
 pub fn product_tile(product: Product) -> Markup {
     let edit_product_link = format!("/admin/products/{}/edit", product.id);
+    let delete_product_link = format!("/admin/products/{}", product.id);
     let product_div_id = format!("product-{}", product.id);
+    let delete_target_id = format!("#product-{}", product.id);
 
     html! {
         div id=(product_div_id) class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm mx-auto" {
@@ -466,7 +469,12 @@ pub fn product_tile(product: Product) -> Markup {
                         aria-controls="products-drawer" {
                             (primary_button(Some("Edit"), None, None))
                     }
-                    (primary_button(Some("Delete"), None, None))
+                    div
+                        hx-delete=(delete_product_link)
+                        hx-target=(delete_target_id)
+                        hx-swap="outerHTML" {
+                            (primary_button(Some("Delete"), None, None))
+                    }
                 }
             }
         }
