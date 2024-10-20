@@ -5,7 +5,6 @@ use axum::{
 };
 use axum_extra::extract::Multipart;
 use maud::{html, Markup};
-use serde::de;
 use sqlx::{Pool, Sqlite};
 
 use crate::{
@@ -271,7 +270,7 @@ pub fn admin_header() -> Markup {
                 (primary_button(None, Some("lg:hidden sm:block"),Some(align_justify_icon())))
             }
             (admin_drawer())
-            div class="flex flex-1 justify-end" {
+            div hx-post="/auth/logout" hx-swap="none" class="flex flex-1 justify-end" {
                 (primary_button(Some("Logout"), Some("inline-flex gap-2 items-center rounded-md px-4 py-2 text-sm font-medium shadow mt-0"), Some(log_out_icon())))
             }
         }

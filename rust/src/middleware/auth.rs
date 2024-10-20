@@ -1,6 +1,6 @@
 use axum::{
     extract::{Request, State},
-    http::{header, StatusCode},
+    http::StatusCode,
     middleware::Next,
     response::{IntoResponse, Response},
 };
@@ -11,7 +11,7 @@ use sqlx::{query_as, Pool, Sqlite};
 use crate::{
     config::Config,
     models::user::User,
-    utilities::{app_error::AppError, jwt::validate_token},
+    utilities::{app_error::AppError, jwt::validate_token, redirect::redirect_307},
 };
 
 pub async fn auth_user(
@@ -136,12 +136,4 @@ pub async fn auth_user(
             },
         }
     }
-}
-
-fn redirect_307(location: &str) -> Response {
-    Response::builder()
-        .status(StatusCode::TEMPORARY_REDIRECT)
-        .header(header::LOCATION, location)
-        .body(axum::body::Body::empty())
-        .unwrap()
 }

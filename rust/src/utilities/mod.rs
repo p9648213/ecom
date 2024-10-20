@@ -2,3 +2,4 @@ pub mod app_error;
 pub mod hash;
 pub mod jwt;
 pub mod minify;
+pub mod redirect;

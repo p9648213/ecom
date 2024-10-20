@@ -1,6 +1,6 @@
 use crate::config::Config;
 use crate::controllers::admin::{delete_product_by_id, get_image_by_product_id};
-use crate::controllers::auth::{login_user, register_user};
+use crate::controllers::auth::{login_user, logout_user, register_user};
 use crate::middleware::auth::auth_user;
 use crate::views::pages::admin::{
     admin_contents, admin_product_list, admin_view, edit_product, edit_product_form, new_product,
@@ -53,6 +53,7 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
         .route("/auth/login", get(login_view))
         .route("/auth/register", post(register_user))
         .route("/auth/login", post(login_user))
+        .route("/auth/logout", post(logout_user))
         .layer(cache_control_layer)
         .with_state(app_state.clone())
         .layer(axum::middleware::from_fn_with_state(
