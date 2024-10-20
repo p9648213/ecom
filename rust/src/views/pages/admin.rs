@@ -1,6 +1,7 @@
 use axum::{
     extract::{Path, State},
     http::StatusCode,
+    response::Html,
 };
 use axum_extra::extract::Multipart;
 use maud::{html, Markup};
@@ -9,7 +10,7 @@ use sqlx::{Pool, Sqlite};
 use crate::{
     controllers::admin::{add_product, get_all_products, get_product_by_id, update_product_by_id},
     models::product::Product,
-    utilities::app_error::AppError,
+    utilities::{app_error::AppError, minify::minify_html},
     views::{
         layout::{admin_layout::create_admin_layout, app_layout::create_app_layout},
         ui::{
@@ -151,7 +152,7 @@ const BRAND_SELECT_OPTIONS: &[SelectOption] = &[
 //.AAAA.....AAAA.DDDDDDDDD...MMMM.MMMMM.MMMMIIIII.NNNN...NNNN..
 //.............................................................
 
-pub async fn admin_view(Path(admin_path): Path<String>) -> Result<Markup, AppError> {
+pub async fn admin_view(Path(admin_path): Path<String>) -> Result<Html<String>, AppError> {
     let view = match admin_path.as_str() {
         "dashboard" => Ok(admin_dashboard()),
         "products" => Ok(admin_products()),
@@ -162,10 +163,12 @@ pub async fn admin_view(Path(admin_path): Path<String>) -> Result<Markup, AppErr
         )),
     }?;
 
-    Ok(create_app_layout(create_admin_layout(view)))
+    Ok(Html(minify_html(
+        &create_app_layout(create_admin_layout(view)).into_string(),
+    )))
 }
 
-pub async fn admin_contents(Path(path): Path<String>) -> Result<Markup, AppError> {
+pub async fn admin_contents(Path(path): Path<String>) -> Result<Html<String>, AppError> {
     let view = match path.as_str() {
         "dashboard" => Ok(admin_dashboard()),
         "products" => Ok(admin_products()),
@@ -176,7 +179,7 @@ pub async fn admin_contents(Path(path): Path<String>) -> Result<Markup, AppError
         )),
     }?;
 
-    Ok(view)
+    Ok(Html(minify_html(&view.into_string())))
 }
 
 pub fn admin_sidebar() -> Markup {
@@ -382,23 +385,15 @@ fn add_product_form() -> Markup {
     }
 }
 
-pub async fn new_product(
-    State(pool): State<Pool<Sqlite>>,
-    mutipart_form: Multipart,
-) -> Result<Markup, AppError> {
-    let new_product = add_product(pool, mutipart_form).await?;
-    Ok(product_tile(new_product))
-}
-
 pub async fn edit_product_form(
     State(pool): State<Pool<Sqlite>>,
     Path(product_id): Path<i32>,
-) -> Result<Markup, AppError> {
+) -> Result<Html<String>, AppError> {
     let product = get_product_by_id(pool, product_id).await?;
     let put_link = format!("/admin/products/{}", product.id);
     let target_id = format!("#product-{}", product.id);
 
-    Ok(html! {
+    let view = html! {
         form
             id="add-product-form"
             hx-put=(put_link)
@@ -422,21 +417,17 @@ pub async fn edit_product_form(
         div type="submit" hx-swap-oob="true" id="products-drawer-header" class="flex gap-3" {
             "Edit Product"
         }
-    })
+    };
+
+    Ok(Html(minify_html(&view.into_string())))
 }
 
-pub async fn edit_product(
-    Path(product_id): Path<i32>,
+pub async fn admin_product_list(
     State(pool): State<Pool<Sqlite>>,
-    mutipart_form: Multipart,
-) -> Result<Markup, AppError> {
-    let product = update_product_by_id(product_id, pool, mutipart_form).await?;
-    Ok(product_tile(product))
-}
-
-pub async fn admin_product_list(State(pool): State<Pool<Sqlite>>) -> Result<Markup, AppError> {
+) -> Result<Html<String>, AppError> {
     let products = get_all_products(&pool).await?;
-    Ok(html! {
+
+    let view = html! {
         @match products.len() {
             0 => {
                 div class="flex flex-col gap-3 p-4 text-center font-bold" {
@@ -451,7 +442,9 @@ pub async fn admin_product_list(State(pool): State<Pool<Sqlite>>) -> Result<Mark
                 }
             }
         }
-    })
+    };
+
+    Ok(Html(minify_html(&view.into_string())))
 }
 
 pub fn product_tile(product: Product) -> Markup {
@@ -483,7 +476,7 @@ pub fn product_tile(product: Product) -> Markup {
 pub fn product_detail(product: Product) -> Markup {
     html! {
         div class="relative" {
-            img class="w-full h-[300px] object-contain rounded-t-lg" onerror=r#"this.onerror=null;this.src="/assets/images/noimage.jpg""# src=(format!("/admin/products/{}/image", product.id)) alt=(product.title) {}
+            img class="w-full h-[300px] object-contain rounded-t-lg" onerror=r#"this.onerror=null;this.src="/assets/images/noimage.jpg""# src=(format!("/admin/products/{}/image", product.id)) alt=(product.title);
         }
         div class="p-6 pt-0" {
             h2 class="text-xl font-bold mb-2 mt-2" {
@@ -508,6 +501,23 @@ pub fn product_detail(product: Product) -> Markup {
             }
         }
     }
+}
+
+pub async fn new_product(
+    State(pool): State<Pool<Sqlite>>,
+    mutipart_form: Multipart,
+) -> Result<Html<String>, AppError> {
+    let new_product = add_product(pool, mutipart_form).await?;
+    Ok(Html(minify_html(&product_tile(new_product).into_string())))
+}
+
+pub async fn edit_product(
+    Path(product_id): Path<i32>,
+    State(pool): State<Pool<Sqlite>>,
+    mutipart_form: Multipart,
+) -> Result<Html<String>, AppError> {
+    let edit_product = update_product_by_id(product_id, pool, mutipart_form).await?;
+    Ok(Html(minify_html(&product_tile(edit_product).into_string())))
 }
 
 //................................................................................

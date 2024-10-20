@@ -38,16 +38,16 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
 
     Router::new()
         .route("/shop/home", get(home_view))
-        .route("/admin/:admin_path", get(admin_view))
-        .route("/admin/contents/:path", get(admin_contents))
-        .route("/admin/products/add", post(new_product))
-        .route("/admin/products/all", get(admin_product_list))
-        .route("/admin/products/:id/edit", get(edit_product_form))
-        .route("/admin/products/:id", put(edit_product))
         .route(
             "/admin/products/:product_id/image",
             get(get_image_by_product_id),
         )
+        .route("/admin/:admin_path", get(admin_view))
+        .route("/admin/contents/:path", get(admin_contents))
+        .route("/admin/products/all", get(admin_product_list))
+        .route("/admin/products/:id/edit", get(edit_product_form))
+        .route("/admin/products/add", post(new_product))
+        .route("/admin/products/:id", put(edit_product))
         .route("/auth/register", get(register_view))
         .route("/auth/login", get(login_view))
         .route("/auth/register", post(register_user))

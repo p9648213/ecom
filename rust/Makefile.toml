@@ -1,0 +1,6 @@
+[tasks.start]
+description = "Start all services (Tailwind, Axum)"
+script = [
+  "npm run dev &",                # Start Tailwind watcher in the background
+  "cargo watch -c -w src -x run", # Start Axum server
+]

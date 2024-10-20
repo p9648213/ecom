@@ -13,6 +13,7 @@ cookie = "0.18.1"
 dotenvy = "0.15.7"
 jsonwebtoken = "9.3.0"
 maud = { version = "0.26.0", features = ["axum"] }
+minify-html-onepass = "0.15.0"
 rand_core = { version = "0.6.4", features = ["getrandom"] }
 serde = { version = "1.0.210", features = ["derive"] }
 sqlx = { version = "0.8.2", features = ["runtime-tokio", "sqlite"] }

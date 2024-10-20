@@ -1,8 +1,12 @@
+use axum::response::Html;
 use maud::{html, Markup};
 
-use crate::views::{
-    layout::{app_layout::create_app_layout, auth_layout::create_auth_layout},
-    ui::{input_with_label::input_with_label, primary_button::primary_button},
+use crate::{
+    utilities::minify::minify_html,
+    views::{
+        layout::{app_layout::create_app_layout, auth_layout::create_auth_layout},
+        ui::{input_with_label::input_with_label, primary_button::primary_button},
+    },
 };
 
 //..........................................................
@@ -21,12 +25,14 @@ use crate::views::{
 //.LLLLLLLLLL....OOOOOO........GGGGGGG...GIIII.NNNN...NNNN..
 //..........................................................
 
-pub async fn login_view() -> Markup {
+pub async fn login_view() -> Html<String> {
     let view = html! {
         (login_form())
     };
 
-    create_app_layout(create_auth_layout(view))
+    Html(minify_html(
+        &create_app_layout(create_auth_layout(view)).into_string(),
+    ))
 }
 
 pub fn login_form() -> Markup {
@@ -74,12 +80,14 @@ pub fn login_form() -> Markup {
 //.RRRR....RRRR.EEEEEEEEEEE....GGGGGGG...GGIII..SSSSSSSS......TTTT....TEEEEEEEEEE.ERRR....RRRR..
 //..............................................................................................
 
-pub async fn register_view() -> Markup {
+pub async fn register_view() -> Html<String> {
     let view = html! {
         (register_form())
     };
 
-    create_app_layout(create_auth_layout(view))
+    Html(minify_html(
+        &create_app_layout(create_auth_layout(view)).into_string(),
+    ))
 }
 
 pub fn register_form() -> Markup {

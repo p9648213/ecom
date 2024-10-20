@@ -8,7 +8,7 @@ pub fn image_upload(name: &str) -> Markup {
           "Upload Image"
         }
         div class="border-2 border-dashed rounded-lg p-4" {
-          input name=(name) id="product-image-upload" type="file" class="hidden" {}
+          input name=(name) id="product-image-upload" type="file" class="hidden";
           div id="product-drag-and-drop" {
             label for="product-image-upload" class="flex flex-col items-center justify-center h-32 cursor-pointer" {
               (upload_icon())

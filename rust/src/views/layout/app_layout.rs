@@ -11,7 +11,7 @@ pub fn create_app_layout(content: Markup) -> Markup {
                 script src="/assets/js/lib/htmx.js" defer {};
                 script src="/assets/js/lib/nprogress.js" defer {};
                 script src="/assets/js/main.js" defer type="module" {};
-                link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" {};
+                link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico";
             }
             body hx-boost="true" hx-history="false" {
                 (content)
