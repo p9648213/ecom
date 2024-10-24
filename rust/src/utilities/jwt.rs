@@ -1,15 +1,13 @@
+use super::app_error::AppError;
 use axum::http::StatusCode;
 use chrono::Duration;
-use jsonwebtoken::{
-    decode, encode, DecodingKey, EncodingKey, Header, Validation,
-};
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 
-use super::app_error::AppError;
-
 #[derive(Serialize, Deserialize, Debug)]
-pub struct Claims {
+pub struct UserClaims {
     pub exp: usize,
+    pub username: String,
     pub email: String,
     pub role: String,
     pub id: i64,
@@ -17,6 +15,7 @@ pub struct Claims {
 
 pub fn create_token(
     secret: &str,
+    username: &str,
     email: &str,
     role: &str,
     id: i64,
@@ -26,11 +25,12 @@ pub fn create_token(
     let expires_duration = Duration::minutes(expires_minutes);
     let exp = (now + expires_duration).timestamp() as usize;
 
-    let claims = Claims {
+    let claims = UserClaims {
         exp,
+        username: username.to_string(),
         email: email.to_string(),
         role: role.to_string(),
-        id
+        id,
     };
     let token_header = Header::default();
     let key = EncodingKey::from_secret(secret.as_bytes());
@@ -44,11 +44,11 @@ pub fn create_token(
     })
 }
 
-pub fn validate_token(secret: &str, token: &str) -> Option<Claims> {
+pub fn validate_token(secret: &str, token: &str) -> Option<UserClaims> {
     let key = DecodingKey::from_secret(secret.as_bytes());
     let validation = Validation::new(jsonwebtoken::Algorithm::HS256);
 
-    let token = decode::<Claims>(token, &key, &validation);
+    let token = decode::<UserClaims>(token, &key, &validation);
 
     if let Ok(token) = token {
         return Some(token.claims);

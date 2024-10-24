@@ -159,7 +159,7 @@ pub async fn admin_view(Path(admin_path): Path<String>) -> Result<Html<String>, 
         "orders" => Ok(admin_orders()),
         _ => Err(AppError::new(
             StatusCode::NOT_FOUND,
-            "Contents not found".to_string(),
+            "Not found".to_string(),
         )),
     }?;
 

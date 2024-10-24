@@ -6,7 +6,7 @@ use crate::views::pages::admin::{
     admin_contents, admin_product_list, admin_view, edit_product, edit_product_form, new_product,
 };
 use crate::views::pages::auth::{login_view, register_view};
-use crate::views::pages::home::home_view;
+use crate::views::pages::shop::shop_view;
 use axum::extract::FromRef;
 use axum::http::header::CACHE_CONTROL;
 use axum::http::HeaderValue;
@@ -37,7 +37,7 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
     );
 
     Router::new()
-        .route("/shop/home", get(home_view))
+        .route("/shop/:shop_path", get(shop_view))
         .route(
             "/admin/products/:product_id/image",
             get(get_image_by_product_id),

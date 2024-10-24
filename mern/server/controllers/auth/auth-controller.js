@@ -67,6 +67,7 @@ export const loginUser = async (req, res) => {
         id: checkUser.id,
         role: checkUser.role,
         email: checkUser.email,
+        userName: checkUser.username,
       },
       "CLIENT_SECRET_KEY",
       { expiresIn: "60m" }
@@ -84,6 +85,7 @@ export const loginUser = async (req, res) => {
           email: checkUser.email,
           role: checkUser.role,
           id: checkUser.id,
+          userName: checkUser.username,
         },
       });
   } catch (error) {
@@ -100,12 +102,12 @@ export const logoutUser = (_req, res) => {
     success: true,
     message: "User logged out successfully",
   });
-}
+};
 
 export const authMiddleware = async (req, res, next) => {
   const token = req.cookies.token;
 
-  if(!token) {
+  if (!token) {
     return res.status(401).json({
       success: false,
       message: "Unauthorized user!",
@@ -122,4 +124,4 @@ export const authMiddleware = async (req, res, next) => {
       message: "Unauthorized user!",
     });
   }
-}
+};

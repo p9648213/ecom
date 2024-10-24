@@ -108,8 +108,6 @@ window.addEventListener("htmx:beforeRequest", function (_) {
 });
 
 window.addEventListener("htmx:afterRequest", function (event) {
-  console.log(event);
-
   const loginLinkEl = document.getElementById("login-link");
   const registerLinkEl = document.getElementById("register-link");
 

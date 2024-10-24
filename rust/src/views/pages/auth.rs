@@ -5,7 +5,10 @@ use crate::{
     utilities::minify::minify_html,
     views::{
         layout::{app_layout::create_app_layout, auth_layout::create_auth_layout},
-        ui::{input_with_label::input_with_label, primary_button::primary_button},
+        ui::{
+            icons::chevron_left_icon, input_with_label::input_with_label,
+            primary_button::primary_button,
+        },
     },
 };
 
@@ -37,7 +40,7 @@ pub async fn login_view() -> Html<String> {
 
 pub fn login_form() -> Markup {
     html! {
-        div class="mx-auto w-full max-w-md space-y-6" {
+        div class="mx-auto w-full max-w-md space-y-6 relative" {
             div class="text-center" {
                 h1 class="text-3xl font-bold tracking-tight text-foreground" { "Sign in to your account" }
                 div class="mt-2 flex justify-center" {
@@ -59,6 +62,12 @@ pub fn login_form() -> Markup {
                     (input_with_label("Password", "password", "password", "password", "Enter your password", ""))
                 }
                 (primary_button(Some("Sign In"), Some("w-full mt-3"), None))
+            }
+            a href="/shop/home" class="absolute flex items-center font-semibold hover:text-gray-500" {
+                div class="flex translate-y-[1px]" {
+                    (chevron_left_icon())
+                }
+                "Back To Home"
             }
         }
     }
@@ -92,7 +101,7 @@ pub async fn register_view() -> Html<String> {
 
 pub fn register_form() -> Markup {
     html! {
-        div class="mx-auto w-full max-w-md space-y-6" {
+        div class="mx-auto w-full max-w-md space-y-6 relative" {
             div class="text-center" {
                 h1 class="text-3xl font-bold tracking-tight text-foreground" { "Create new account"}
                 div class="mt-2 flex justify-center" {
@@ -115,6 +124,12 @@ pub fn register_form() -> Markup {
                     (input_with_label("Password", "password", "password", "password", "Enter your password", ""))
                 }
                 (primary_button(Some("Sign Up"), Some("w-full mt-3"), None))
+            }
+            a href="/shop/home" class="absolute flex items-center font-semibold hover:text-gray-500" {
+                div class="flex translate-y-[1px]" {
+                    (chevron_left_icon())
+                }
+                "Back To Home"
             }
         }
     }

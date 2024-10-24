@@ -16,7 +16,6 @@ use crate::{
         app_error::AppError,
         hash::{hash_password, verify_password},
         jwt::create_token,
-        redirect::redirect_307,
     },
 };
 
@@ -59,11 +58,18 @@ pub async fn login_user(
         if !verify_password(&login_form.password, &user.password)? {
             return Err(AppError::new(
                 StatusCode::UNAUTHORIZED,
-                "Invalid password".to_string(),
+                "Invalid username or password".to_string(),
             ));
         }
 
-        let token = create_token(&config.jwt_secret, &user.email, &user.role, user.id, 60)?;
+        let token = create_token(
+            &config.jwt_secret,
+            &user.username,
+            &user.email,
+            &user.role,
+            user.id,
+            60,
+        )?;
 
         let token_cookie: Cookie = Cookie::build(("token", token))
             .same_site(cookie::SameSite::Lax)
@@ -102,7 +108,7 @@ pub async fn login_user(
     } else {
         return Err(AppError::new(
             StatusCode::UNAUTHORIZED,
-            "User not found".to_string(),
+            "Invalid username or password".to_string(),
         ));
     }
 }
