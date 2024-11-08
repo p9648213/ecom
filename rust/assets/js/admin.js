@@ -33,7 +33,7 @@ function toggleMenuItemsBackground(pathname = window.location.pathname) {
 toggleMenuItemsBackground();
 
 document.body.addEventListener("htmx:pushedIntoHistory", (event) => {
-  if (event?.detail?.pathInfo?.requestPath.includes("/admin/")) {
+  if (event?.detail?.path?.includes("/admin/")) {
     toggleMenuItemsBackground();
   }
 });
