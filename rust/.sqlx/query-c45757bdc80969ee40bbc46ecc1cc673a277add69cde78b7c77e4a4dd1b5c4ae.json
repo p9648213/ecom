@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        DELETE FROM images WHERE product_id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "c45757bdc80969ee40bbc46ecc1cc673a277add69cde78b7c77e4a4dd1b5c4ae"
+}

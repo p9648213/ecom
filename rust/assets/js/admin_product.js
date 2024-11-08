@@ -1,4 +1,4 @@
-function admin_product_load_event() {
+export function updateImageLoadEvent() {
   const product_image_upload = document.getElementById("product-image-upload");
   const product_drag_and_drop = document.getElementById(
     "product-drag-and-drop"
@@ -21,13 +21,3 @@ function admin_product_load_event() {
     }
   });
 }
-
-if (window.location.pathname === "/admin/products") {
-  admin_product_load_event();
-}
-
-document.body.addEventListener("htmx:afterSettle", (event) => {
-  if (event?.detail?.pathInfo?.requestPath.includes("/admin/products")) {
-    admin_product_load_event();
-  }
-});

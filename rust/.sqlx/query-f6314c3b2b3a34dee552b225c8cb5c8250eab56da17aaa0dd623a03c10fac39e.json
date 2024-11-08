@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO products (title, description, category, brand, price, sale_price, total_stock)\n        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "category",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "brand",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "price",
+        "ordinal": 5,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sale_price",
+        "ordinal": 6,
+        "type_info": "Integer"
+      },
+      {
+        "name": "total_stock",
+        "ordinal": 7,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f6314c3b2b3a34dee552b225c8cb5c8250eab56da17aaa0dd623a03c10fac39e"
+}

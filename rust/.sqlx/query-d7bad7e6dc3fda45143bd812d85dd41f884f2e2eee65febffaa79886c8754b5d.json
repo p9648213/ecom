@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        SELECT * FROM products ORDER BY id DESC\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "category",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "brand",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "price",
+        "ordinal": 5,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sale_price",
+        "ordinal": 6,
+        "type_info": "Integer"
+      },
+      {
+        "name": "total_stock",
+        "ordinal": 7,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d7bad7e6dc3fda45143bd812d85dd41f884f2e2eee65febffaa79886c8754b5d"
+}

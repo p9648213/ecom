@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        UPDATE products SET title = $1, description = $2, category = $3, brand = $4, price = $5, sale_price = $6, total_stock = $7 WHERE id = $8 RETURNING *\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Integer"
+      },
+      {
+        "name": "title",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "description",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "category",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "brand",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "price",
+        "ordinal": 5,
+        "type_info": "Integer"
+      },
+      {
+        "name": "sale_price",
+        "ordinal": 6,
+        "type_info": "Integer"
+      },
+      {
+        "name": "total_stock",
+        "ordinal": 7,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2aa9be85d7c2daa6f9f1ba7918ed9f82d13df5171cc551f2343e90d2fa7220db"
+}

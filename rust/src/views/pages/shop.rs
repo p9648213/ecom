@@ -21,7 +21,7 @@ use axum::{
     response::Html,
     Extension,
 };
-use maud::{html, Markup};
+use maud::{html, Markup, PreEscaped};
 use sqlx::{Pool, Sqlite};
 
 struct MenuItem {
@@ -181,6 +181,12 @@ pub fn shop_header(user_extension: UserExtention) -> Markup {
     let user = user_extension.user;
 
     html! {
+        (PreEscaped(r#"
+            <script type="module">
+                import {setupUserDropdown} from "/assets/js/shop.js";
+                setupUserDropdown();
+            </script>
+        "#))
         header class="top-0 z-40 sticky bg-background border-b w-full" {
             div class="flex justify-between items-center px-4 md:px-6 h-16" {
                 div
@@ -325,6 +331,12 @@ pub fn home_view() -> Markup {
 
 pub fn list_view(products: Vec<Product>) -> Markup {
     html! {
+        (PreEscaped(r#"
+            <script type="module">
+                import {setupSortbyDropdown} from "/assets/js/shop.js";
+                setupSortbyDropdown();
+            </script>
+        "#))
         div id="shop-contents" class="gap-6 grid grid-cols-1 md:grid-cols-[300px_1fr] p-4 md:p-6" {
             (product_filter())
             div class="bg-background shadow-sm rounded-lg w-full" {

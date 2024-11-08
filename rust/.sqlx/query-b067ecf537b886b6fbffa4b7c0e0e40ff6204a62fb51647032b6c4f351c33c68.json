@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n        INSERT INTO images (product_id, name, content_type, image)\n        VALUES ($1, $2, $3, $4)\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "b067ecf537b886b6fbffa4b7c0e0e40ff6204a62fb51647032b6c4f351c33c68"
+}

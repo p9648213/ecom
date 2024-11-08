@@ -1,11 +1,11 @@
-const admin_dashboard = document.getElementById("admin-dashboard");
-const admin_products = document.getElementById("admin-products");
-const admin_orders = document.getElementById("admin-orders");
-const drawer_products = document.getElementById("drawer-admin-products");
-const drawer_orders = document.getElementById("drawer-admin-orders");
-const drawer_dashboard = document.getElementById("drawer-admin-dashboard");
+export function toggleMenuItemsBackground(pathname = window.location.pathname) {
+  const admin_dashboard = document.getElementById("admin-dashboard");
+  const admin_products = document.getElementById("admin-products");
+  const admin_orders = document.getElementById("admin-orders");
+  const drawer_products = document.getElementById("drawer-admin-products");
+  const drawer_orders = document.getElementById("drawer-admin-orders");
+  const drawer_dashboard = document.getElementById("drawer-admin-dashboard");
 
-function toggleMenuItemsBackground(pathname = window.location.pathname) {
   if (pathname === "/admin/dashboard") {
     admin_dashboard.classList.add("bg-muted");
     admin_products.classList.remove("bg-muted");
@@ -29,14 +29,6 @@ function toggleMenuItemsBackground(pathname = window.location.pathname) {
     drawer_orders.classList.add("bg-muted");
   }
 }
-
-toggleMenuItemsBackground();
-
-document.body.addEventListener("htmx:pushedIntoHistory", (event) => {
-  if (event?.detail?.path?.includes("/admin/")) {
-    toggleMenuItemsBackground();
-  }
-});
 
 function resetAddProductForm() {
   const addProductHeader = document.getElementById("products-drawer-header");

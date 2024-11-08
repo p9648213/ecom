@@ -4,7 +4,7 @@ use axum::{
     response::Html,
 };
 use axum_extra::extract::Multipart;
-use maud::{html, Markup};
+use maud::{html, Markup, PreEscaped};
 use sqlx::{Pool, Sqlite};
 
 use crate::{
@@ -295,6 +295,12 @@ pub fn admin_header() -> Markup {
 
 fn admin_dashboard() -> Markup {
     html! {
+        (PreEscaped(r#"
+            <script type="module">
+                import {toggleMenuItemsBackground} from "/assets/js/admin.js";
+                toggleMenuItemsBackground();
+            </script>
+        "#))
         div id="admin-contents" class="flex mb-5 w-full" { "admin dashboard"}
     }
 }
@@ -317,6 +323,14 @@ fn admin_dashboard() -> Markup {
 
 fn admin_products() -> Markup {
     html! {
+        (PreEscaped(r#"
+            <script type="module">
+                import {updateImageLoadEvent} from "/assets/js/admin_product.js";
+                import {toggleMenuItemsBackground} from "/assets/js/admin.js";
+                updateImageLoadEvent();
+                toggleMenuItemsBackground();
+            </script>
+        "#))
         div id="admin-contents" {
             div class="flex justify-end mb-5 w-full" {
                 div hx-on:click=r#"window.resetAddProductForm()"# data-drawer-trigger aria-controls="products-drawer" {
@@ -545,6 +559,12 @@ pub async fn edit_product(
 
 fn admin_orders() -> Markup {
     html! {
+        (PreEscaped(r#"
+            <script type="module">
+                import {toggleMenuItemsBackground} from "/assets/js/admin.js";
+                toggleMenuItemsBackground();
+            </script>
+        "#))
         div id="admin-contents" class="flex mb-5 w-full" {"admin orders"}
     }
 }

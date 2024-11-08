@@ -35,7 +35,7 @@ const setupDropdown = (containerId, dropdownId) => {
   document.addEventListener("click", handleClickOutside);
 };
 
-function setupUserDropdown() {
+export function setupUserDropdown() {
   setupDropdown("user-dropdown-container", "user-dropdown");
   const loggedInDiv = document.getElementById("user-logged-in");
   if (loggedInDiv) {
@@ -45,30 +45,6 @@ function setupUserDropdown() {
   }
 }
 
-function setupSortbyDropdown() {
+export function setupSortbyDropdown() {
   setupDropdown("sortby-dropdown-container", "sortby-dropdown");
 }
-
-// Init user and sort Dropdown
-setupUserDropdown();
-
-if (window.location.pathname === "/shop/listing") {
-  setupSortbyDropdown();
-}
-
-let reInitUserDropdown = false;
-
-document.body.addEventListener("htmx:afterSettle", (event) => {
-  if (event?.detail?.pathInfo?.requestPath?.includes("/shop/")) {
-    if (reInitUserDropdown === true) {
-      setupUserDropdown();
-      reInitUserDropdown = false;
-    }
-  } else {
-    reInitUserDropdown = true;
-  }
-
-  if (event?.detail?.pathInfo?.requestPath.includes("/shop/listing")) {
-    setupSortbyDropdown();
-  }
-});
