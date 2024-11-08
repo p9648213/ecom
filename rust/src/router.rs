@@ -6,7 +6,7 @@ use crate::views::pages::admin::{
     admin_contents, admin_product_list, admin_view, edit_product, edit_product_form, new_product,
 };
 use crate::views::pages::auth::{login_view, register_view};
-use crate::views::pages::shop::shop_view;
+use crate::views::pages::shop::{shop_content, shop_view};
 use axum::extract::FromRef;
 use axum::http::header::CACHE_CONTROL;
 use axum::http::HeaderValue;
@@ -38,12 +38,9 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
 
     Router::new()
         .route("/shop/:shop_path", get(shop_view))
-        .route(
-            "/admin/products/:product_id/image",
-            get(get_image_by_product_id),
-        )
+        .route("/contents/shop/:path", get(shop_content))
         .route("/admin/:admin_path", get(admin_view))
-        .route("/admin/contents/:path", get(admin_contents))
+        .route("/contents/admin/:path", get(admin_contents))
         .route("/admin/products/all", get(admin_product_list))
         .route("/admin/products/:id/edit", get(edit_product_form))
         .route("/admin/products/add", post(new_product))
@@ -55,11 +52,15 @@ pub fn create_router(pool: Pool<Sqlite>, config: Config) -> Router {
         .route("/auth/login", post(login_user))
         .route("/auth/logout", post(logout_user))
         .layer(cache_control_layer)
-        .with_state(app_state.clone())
         .layer(axum::middleware::from_fn_with_state(
             app_state.clone(),
             auth_user,
         ))
+        .route(
+            "/admin/products/:product_id/image",
+            get(get_image_by_product_id),
+        )
+        .with_state(app_state.clone())
         .route("/check_health", get(ping))
         .nest_service("/assets", ServeDir::new(assets_dir))
         .layer(CompressionLayer::new())

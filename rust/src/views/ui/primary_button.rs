@@ -32,3 +32,40 @@ pub fn primary_button(text: Option<&str>, class: Option<&str>, icon: Option<Mark
       }
     }
 }
+
+pub fn outline_button(text: Option<&str>, class: Option<&str>, icon: Option<Markup>) -> Markup {
+    let default_button_class = String::from("inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50");
+
+    let size_class = "h-9 px-3";
+
+    let outline_class =
+        "border border-input bg-background hover:bg-accent hover:text-accent-foreground";
+
+    let button_class = match class {
+        Some(class) => {
+            tw_merge!(default_button_class, outline_class, size_class, class)
+        }
+        None => default_button_class.to_string(),
+    };
+
+    let button_text = match text {
+        Some(text) => {
+            html! {
+              div { (text) }
+            }
+        }
+        None => html! {},
+    };
+
+    let icon = match icon {
+        Some(icon) => icon,
+        None => html! {},
+    };
+
+    html! {
+      button type="submit" class=(button_class) {
+          (icon)
+          (button_text)
+      }
+    }
+}

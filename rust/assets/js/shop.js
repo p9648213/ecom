@@ -1,36 +1,74 @@
-// Get the dropdown, its container, and the "Logged in as" div
-const dropdownContainer = document.getElementById("user-dropdown-container");
-const dropdown = document.getElementById("user-dropdown");
-const loggedInDiv = document.getElementById("user-logged-in");
+// Helper function to set up a dropdown with click outside to close functionality
+const setupDropdown = (containerId, dropdownId) => {
+  const container = document.getElementById(containerId);
+  const dropdown = document.getElementById(dropdownId);
 
-// Function to toggle the dropdown visibility
-const toggleDropdown = () => {
-  dropdown.classList.toggle("hidden");
-};
+  if (!container || !dropdown) return;
 
-// Function to hide the dropdown if clicking outside
-const handleClickOutside = (event) => {
-  if (!dropdownContainer.contains(event.target)) {
-    dropdown.classList.add("hidden");
-  }
-};
+  const toggleDropdown = () => {
+    dropdown.classList.toggle("hidden");
+  };
 
-if (dropdownContainer) {
-  // Add event listener to the dropdown container for toggle
-  dropdownContainer.addEventListener("click", (event) => {
+  const handleClickOutside = (event) => {
+    if (!container.contains(event.target)) {
+      dropdown.classList.add("hidden");
+    }
+  };
+
+  container.addEventListener("click", (event) => {
     event.stopPropagation();
     toggleDropdown();
   });
-}
 
-if (loggedInDiv) {
-  // Prevent hiding the dropdown when clicking on the "Logged in as" div
-  loggedInDiv.addEventListener("click", (event) => {
-    event.stopPropagation();
-  });
-}
+  if (containerId !== "user-dropdown-container") {
+    dropdown.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
 
-// Add event listener for outside clicks
-if (dropdownContainer && loggedInDiv && dropdown) {
+    dropdown.querySelector("div").childNodes.forEach((el) => {
+      el.addEventListener("click", () => {
+        toggleDropdown();
+      });
+    });
+  }
+
   document.addEventListener("click", handleClickOutside);
+};
+
+function setupUserDropdown() {
+  setupDropdown("user-dropdown-container", "user-dropdown");
+  const loggedInDiv = document.getElementById("user-logged-in");
+  if (loggedInDiv) {
+    loggedInDiv.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+  }
 }
+
+function setupSortbyDropdown() {
+  setupDropdown("sortby-dropdown-container", "sortby-dropdown");
+}
+
+// Init user and sort Dropdown
+setupUserDropdown();
+
+if (window.location.pathname === "/shop/listing") {
+  setupSortbyDropdown();
+}
+
+let reInitUserDropdown = false;
+
+document.body.addEventListener("htmx:afterSettle", (event) => {
+  if (event?.detail?.pathInfo?.requestPath?.includes("/shop/")) {
+    if (reInitUserDropdown === true) {
+      setupUserDropdown();
+      reInitUserDropdown = false;
+    }
+  } else {
+    reInitUserDropdown = true;
+  }
+
+  if (event?.detail?.pathInfo?.requestPath.includes("/shop/listing")) {
+    setupSortbyDropdown();
+  }
+});

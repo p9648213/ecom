@@ -1,14 +1,11 @@
 use axum::response::Html;
 use maud::{html, Markup};
 
-use crate::{
-    utilities::minify::minify_html,
-    views::{
-        layout::{app_layout::create_app_layout, auth_layout::create_auth_layout},
-        ui::{
-            icons::chevron_left_icon, input_with_label::input_with_label,
-            primary_button::primary_button,
-        },
+use crate::views::{
+    layout::{app_layout::create_app_layout, auth_layout::create_auth_layout},
+    ui::{
+        icons::chevron_left_icon, input_with_label::input_with_label,
+        primary_button::primary_button,
     },
 };
 
@@ -33,19 +30,17 @@ pub async fn login_view() -> Html<String> {
         (login_form())
     };
 
-    Html(minify_html(
-        &create_app_layout(create_auth_layout(view)).into_string(),
-    ))
+    Html(create_app_layout(create_auth_layout(view)).into_string())
 }
 
 pub fn login_form() -> Markup {
     html! {
-        div class="mx-auto w-full max-w-md space-y-6 relative" {
+        div class="relative space-y-6 mx-auto w-full max-w-md" {
             div class="text-center" {
-                h1 class="text-3xl font-bold tracking-tight text-foreground" { "Sign in to your account" }
-                div class="mt-2 flex justify-center" {
+                h1 class="font-bold text-3xl text-foreground tracking-tight" { "Sign in to your account" }
+                div class="flex justify-center mt-2" {
                     "Don't have an account?"
-                    a id="register-link" href="/auth/register" class="font-medium text-pretty hover:underline ml-2" {
+                    a id="register-link" href="/auth/register" class="ml-2 font-medium text-pretty hover:underline" {
                         span { "Register" }
                     }
                 }
@@ -94,19 +89,17 @@ pub async fn register_view() -> Html<String> {
         (register_form())
     };
 
-    Html(minify_html(
-        &create_app_layout(create_auth_layout(view)).into_string(),
-    ))
+    Html(create_app_layout(create_auth_layout(view)).into_string())
 }
 
 pub fn register_form() -> Markup {
     html! {
-        div class="mx-auto w-full max-w-md space-y-6 relative" {
+        div class="relative space-y-6 mx-auto w-full max-w-md" {
             div class="text-center" {
-                h1 class="text-3xl font-bold tracking-tight text-foreground" { "Create new account"}
-                div class="mt-2 flex justify-center" {
+                h1 class="font-bold text-3xl text-foreground tracking-tight" { "Create new account"}
+                div class="flex justify-center mt-2" {
                     "Already have an account?"
-                    a id="login-link" href="/auth/login" class="font-medium text-pretty hover:underline ml-2" {
+                    a id="login-link" href="/auth/login" class="ml-2 font-medium text-pretty hover:underline" {
                         span { "Login" }
                     }
                 }

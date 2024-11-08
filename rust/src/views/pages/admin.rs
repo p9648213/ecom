@@ -10,7 +10,7 @@ use sqlx::{Pool, Sqlite};
 use crate::{
     controllers::admin::{add_product, get_all_products, get_product_by_id, update_product_by_id},
     models::product::Product,
-    utilities::{app_error::AppError, minify::minify_html},
+    utilities::app_error::AppError,
     views::{
         layout::{admin_layout::create_admin_layout, app_layout::create_app_layout},
         ui::{
@@ -66,21 +66,21 @@ const MENUITEMS: &[MenuItem] = &[
     MenuItem {
         id: "admin-dashboard",
         label: "Dashboard",
-        path: "/admin/contents/dashboard",
+        path: "/contents/admin/dashboard",
         icon: MenuItemIcon::Dashboard,
         url: "/admin/dashboard",
     },
     MenuItem {
         id: "admin-products",
         label: "Products",
-        path: "/admin/contents/products",
+        path: "/contents/admin/products",
         icon: MenuItemIcon::Products,
         url: "/admin/products",
     },
     MenuItem {
         id: "admin-orders",
         label: "Orders",
-        path: "/admin/contents/orders",
+        path: "/contents/admin/orders",
         icon: MenuItemIcon::Orders,
         url: "/admin/orders",
     },
@@ -163,9 +163,9 @@ pub async fn admin_view(Path(admin_path): Path<String>) -> Result<Html<String>, 
         )),
     }?;
 
-    Ok(Html(minify_html(
-        &create_app_layout(create_admin_layout(view)).into_string(),
-    )))
+    Ok(Html(
+        create_app_layout(create_admin_layout(view)).into_string(),
+    ))
 }
 
 pub async fn admin_contents(Path(path): Path<String>) -> Result<Html<String>, AppError> {
@@ -179,15 +179,15 @@ pub async fn admin_contents(Path(path): Path<String>) -> Result<Html<String>, Ap
         )),
     }?;
 
-    Ok(Html(minify_html(&view.into_string())))
+    Ok(Html(view.into_string()))
 }
 
 pub fn admin_sidebar() -> Markup {
     html! {
-        aside class="hidden w-64 flex-col border-r bg-background p-6 lg:flex" {
-            div class="flex cursor-pointer items-center gap-2" {
+        aside class="lg:flex flex-col hidden bg-background p-6 border-r w-64" {
+            div class="flex items-center gap-2 cursor-pointer" {
                 (chart_no_axes_combined_icon())
-                h1 class="text-2xl font-extrabold" { "Admin Panel" }
+                h1 class="font-extrabold text-2xl" { "Admin Panel" }
             }
             (menuitems())
         }
@@ -204,7 +204,7 @@ fn menuitem_icon(item: &MenuItemIcon) -> Markup {
 
 fn menuitems() -> Markup {
     html! {
-        nav class="mt-8 flex-col flex gap-2" {
+        nav class="flex flex-col gap-2 mt-8" {
             @for item in MENUITEMS {
                 div
                     hx-get=(item.path)
@@ -212,7 +212,7 @@ fn menuitems() -> Markup {
                     hx-swap="outerHTML"
                     hx-push-url=(item.url)
                     id=(item.id)
-                    class="group flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground" {
+                    class="flex items-center gap-2 hover:bg-muted px-3 py-2 rounded-md text-muted-foreground text-xl hover:text-foreground cursor-pointer group" {
                         (menuitem_icon(&item.icon))
                         span { (item.label) }
                 }
@@ -223,13 +223,13 @@ fn menuitems() -> Markup {
 
 fn admin_drawer() -> Markup {
     html! {
-        section class="drawer drawer--left" id="admin-drawer" data-drawer-target {
+        section class="drawer--left drawer" id="admin-drawer" data-drawer-target {
             div class="drawer__overlay" data-drawer-close tabindex="-1" {}
             div class="drawer__wrapper" {
                 div class="drawer__header" {
                     div class="flex gap-3" {
                         (chart_no_axes_combined_icon())
-                        h1 class="text-2xl font-extrabold" {
+                        h1 class="font-extrabold text-2xl" {
                             "Admin Panel"
                         }
                     }
@@ -245,7 +245,7 @@ fn admin_drawer() -> Markup {
 
 fn menuitems_drawers() -> Markup {
     html! {
-        nav class="mt-8 flex-col flex gap-2" {
+        nav class="flex flex-col gap-2 mt-8" {
             @for item in MENUITEMS {
                 div
                     hx-get=(item.path)
@@ -254,7 +254,7 @@ fn menuitems_drawers() -> Markup {
                     hx-push-url=(item.url)
                     id=(format!("drawer-{}", item.id))
                     data-drawer-close
-                    class="group flex cursor-pointer text-xl items-center gap-2 rounded-md px-3 py-2 text-muted-foreground hover:bg-muted hover:text-foreground" {
+                    class="flex items-center gap-2 hover:bg-muted px-3 py-2 rounded-md text-muted-foreground text-xl hover:text-foreground cursor-pointer group" {
                         (menuitem_icon(&item.icon))
                         span { (item.label) }
                 }
@@ -265,7 +265,7 @@ fn menuitems_drawers() -> Markup {
 
 pub fn admin_header() -> Markup {
     html! {
-        header class="flex items-center justify-between px-4 py-3 bg-background border-b" {
+        header class="flex justify-between items-center bg-background px-4 py-3 border-b" {
             a href="#" data-drawer-trigger aria-controls="admin-drawer" aria-expanded="false" {
                 (primary_button(None, Some("lg:hidden sm:block"),Some(align_justify_icon())))
             }
@@ -295,7 +295,7 @@ pub fn admin_header() -> Markup {
 
 fn admin_dashboard() -> Markup {
     html! {
-        div id="admin-contents" class="mb-5 w-full flex" { "admin dashboard"}
+        div id="admin-contents" class="flex mb-5 w-full" { "admin dashboard"}
     }
 }
 
@@ -318,7 +318,7 @@ fn admin_dashboard() -> Markup {
 fn admin_products() -> Markup {
     html! {
         div id="admin-contents" {
-            div class="mb-5 w-full flex justify-end" {
+            div class="flex justify-end mb-5 w-full" {
                 div hx-on:click=r#"window.resetAddProductForm()"# data-drawer-trigger aria-controls="products-drawer" {
                     (primary_button(Some("Add New Product"), None, None))
                 }
@@ -341,7 +341,7 @@ fn admin_products() -> Markup {
 
 fn products_drawer() -> Markup {
     html! {
-        section class="drawer drawer--right" id="products-drawer" data-drawer-target {
+        section class="drawer--right drawer" id="products-drawer" data-drawer-target {
             div class="drawer__overlay" data-drawer-close tabindex="-1" {}
             div class="drawer__wrapper" style="width: 26rem" {
                 div class="drawer__header" {
@@ -419,7 +419,7 @@ pub async fn edit_product_form(
         }
     };
 
-    Ok(Html(minify_html(&view.into_string())))
+    Ok(Html(view.into_string()))
 }
 
 pub async fn admin_product_list(
@@ -430,12 +430,12 @@ pub async fn admin_product_list(
     let view = html! {
         @match products.len() {
             0 => {
-                div class="flex flex-col gap-3 p-4 text-center font-bold" {
+                div class="flex flex-col gap-3 p-4 font-bold text-center" {
                     "No products found"
                 }
             }
             _ => {
-                div id="admin-product-list" class="grid gap-4 md:grid-cols-3 lg:grid-cols-4" {
+                div id="admin-product-list" class="gap-4 grid md:grid-cols-3 lg:grid-cols-4" {
                     @for product in products {
                         (product_tile(product))
                     }
@@ -444,7 +444,7 @@ pub async fn admin_product_list(
         }
     };
 
-    Ok(Html(minify_html(&view.into_string())))
+    Ok(Html(view.into_string()))
 }
 
 pub fn product_tile(product: Product) -> Markup {
@@ -454,12 +454,12 @@ pub fn product_tile(product: Product) -> Markup {
     let delete_target_id = format!("#product-{}", product.id);
 
     html! {
-        div id=(product_div_id) class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-sm mx-auto" {
+        div id=(product_div_id) class="bg-card shadow-sm mx-auto border rounded-lg w-full max-w-sm text-card-foreground" {
             div {
                 div  {
                     (product_detail(product))
                 }
-                div class="flex items-center p-6 pt-0 justify-between" {
+                div class="flex justify-between items-center p-6 pt-0" {
                     div
                         hx-get=(edit_product_link)
                         hx-swap="outerHTML"
@@ -483,10 +483,10 @@ pub fn product_tile(product: Product) -> Markup {
 pub fn product_detail(product: Product) -> Markup {
     html! {
         div class="relative" {
-            img class="w-full h-[300px] object-contain rounded-t-lg" onerror=r#"this.onerror=null;this.src="/assets/images/noimage.jpg""# src=(format!("/admin/products/{}/image", product.id)) alt=(product.title);
+            img class="rounded-t-lg w-full h-[300px] object-contain" onerror=r#"this.onerror=null;this.src="/assets/images/noimage.jpg""# src=(format!("/admin/products/{}/image", product.id)) alt=(product.title);
         }
         div class="p-6 pt-0" {
-            h2 class="text-xl font-bold mb-2 mt-2" {
+            h2 class="mt-2 mb-2 font-bold text-xl" {
                 (product.title)
             }
             div class="flex justify-between items-center mb-2" {
@@ -495,13 +495,13 @@ pub fn product_detail(product: Product) -> Markup {
                         (product.price)
                     }
                 }@else {
-                    span class="text-lg font-semibold text-primary" {
+                    span class="font-semibold text-lg text-primary" {
                         (product.price)
                     }
                 }
 
                 @if product.sale_price > 0 {
-                    span class="text-lg font-bold" {
+                    span class="font-bold text-lg" {
                         (product.sale_price)
                     }
                 }
@@ -515,7 +515,7 @@ pub async fn new_product(
     mutipart_form: Multipart,
 ) -> Result<Html<String>, AppError> {
     let new_product = add_product(pool, mutipart_form).await?;
-    Ok(Html(minify_html(&product_tile(new_product).into_string())))
+    Ok(Html(product_tile(new_product).into_string()))
 }
 
 pub async fn edit_product(
@@ -524,7 +524,7 @@ pub async fn edit_product(
     mutipart_form: Multipart,
 ) -> Result<Html<String>, AppError> {
     let edit_product = update_product_by_id(product_id, pool, mutipart_form).await?;
-    Ok(Html(minify_html(&product_tile(edit_product).into_string())))
+    Ok(Html(product_tile(edit_product).into_string()))
 }
 
 //................................................................................
@@ -545,6 +545,6 @@ pub async fn edit_product(
 
 fn admin_orders() -> Markup {
     html! {
-        div id="admin-contents" class="mb-5 w-full flex" {"admin orders"}
+        div id="admin-contents" class="flex mb-5 w-full" {"admin orders"}
     }
 }

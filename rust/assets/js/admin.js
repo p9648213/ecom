@@ -32,8 +32,10 @@ function toggleMenuItemsBackground(pathname = window.location.pathname) {
 
 toggleMenuItemsBackground();
 
-document.addEventListener("htmx:pushedIntoHistory", () => {
-  toggleMenuItemsBackground();
+document.body.addEventListener("htmx:pushedIntoHistory", (event) => {
+  if (event?.detail?.pathInfo?.requestPath.includes("/admin/")) {
+    toggleMenuItemsBackground();
+  }
 });
 
 function resetAddProductForm() {

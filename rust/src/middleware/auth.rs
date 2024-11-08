@@ -29,6 +29,10 @@ pub async fn auth_user(
     mut request: Request,
     next: Next,
 ) -> Result<impl IntoResponse, AppError> {
+    if request.uri().path() == "/" {
+        return Ok(redirect_307("/shop/home"));
+    }
+
     let cookie = request.headers().get("cookie");
 
     if let Some(cookie) = cookie {

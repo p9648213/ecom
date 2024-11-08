@@ -7,13 +7,14 @@ pub fn create_app_layout(content: Markup) -> Markup {
             head {
                 meta charset="utf-8";
                 meta name="viewport" content="width=device-width, initial-scale=1";
+                link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico";
                 link rel="stylesheet" href="/assets/css/main.css";
                 script src="/assets/js/lib/htmx.js" defer {};
                 script src="/assets/js/lib/nprogress.js" defer {};
                 script src="/assets/js/main.js" defer type="module" {};
-                link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico";
             }
             body hx-boost="true" hx-history="false" {
+                script {"0"}
                 (content)
                 div id="toast" {}
             }

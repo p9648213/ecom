@@ -26,8 +26,8 @@ if (window.location.pathname === "/admin/products") {
   admin_product_load_event();
 }
 
-window.addEventListener("htmx:afterSettle", (_) => {
-  if (window.location.pathname === "/admin/products") {
+document.body.addEventListener("htmx:afterSettle", (event) => {
+  if (event?.detail?.pathInfo?.requestPath.includes("/admin/products")) {
     admin_product_load_event();
   }
 });

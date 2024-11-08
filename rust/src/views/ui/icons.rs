@@ -2,7 +2,7 @@ use maud::{html, Markup};
 
 pub fn upload_icon() -> Markup {
     html! {
-      svg class="w-10 h-10 text-muted-foreground mb-2" stroke-linejoin="round" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" {
+      svg class="mb-2 w-10 h-10 text-muted-foreground" stroke-linejoin="round" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" {
         path d="M12 13v8" {}
         path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" {}
         path d="m8 17 4-4 4 4" {}
@@ -21,7 +21,7 @@ pub fn x_icon() -> Markup {
 
 pub fn file_icon() -> Markup {
     html! {
-      svg class="w-8 text-primary mr-2 h-8" stroke="currentColor" stroke-width="2" width="24" viewBox="0 0 24 24" stroke-linecap="round" fill="none" stroke-linejoin="round" height="24" xmlns="http://www.w3.org/2000/svg" {
+      svg class="mr-2 w-8 h-8 text-primary" stroke="currentColor" stroke-width="2" width="24" viewBox="0 0 24 24" stroke-linecap="round" fill="none" stroke-linejoin="round" height="24" xmlns="http://www.w3.org/2000/svg" {
         path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" {}
         path d="M14 2v4a2 2 0 0 0 2 2h4" {}
       }
@@ -30,7 +30,7 @@ pub fn file_icon() -> Markup {
 
 pub fn loading_icon() -> Markup {
     html! {
-        svg class="animate-spin h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {
+        svg class="w-7 h-7 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" {
             circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" {
             }
             path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" {
@@ -178,6 +178,17 @@ pub fn chevron_left_icon() -> Markup {
     html! {
         svg."lucide lucide-chevron-left" stroke-linejoin="round" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" width="20" height="20" stroke-linecap="round" {
             path d="m15 18-6-6 6-6" {}
+        }
+    }
+}
+
+pub fn arrow_up_down_icon() -> Markup {
+    html! {
+        svg."lucide lucide-arrow-up-down w-4 h-4" stroke-linejoin="round" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" width="24" height="24" stroke-linecap="round" {
+            path d="m21 16-4 4-4-4" {}
+            path d="M17 20V4" {}
+            path d="m3 8 4-4 4 4" {}
+            path d="M7 4v16" {}
         }
     }
 }

@@ -33,18 +33,18 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+      <div className="flex flex-col justify-center items-center space-y-3 h-screen">
+        <Skeleton className="rounded-xl w-[250px] h-[125px]" />
         <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
-          <Skeleton className="h-4 w-[200px]" />
+          <Skeleton className="w-[250px] h-4" />
+          <Skeleton className="w-[200px] h-4" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col overflow-hidden bg-white">
+    <div className="flex flex-col bg-white overflow-hidden">
       <Routes>
         {/* user auth */}
         <Route

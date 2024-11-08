@@ -8,11 +8,11 @@ pub fn create_admin_layout(content: Markup) -> Markup {
       script src="/assets/js/admin.js" defer type="module" {};
       script src="/assets/js/admin_product.js" defer type="module" {};
       title { "Admin" }
-      div class="flex min-h-screen w-full" {
+      div class="flex w-full min-h-screen" {
         (admin_sidebar())
-        div class="flex flex-1 flex-col" {
+        div class="flex flex-col flex-1" {
           (admin_header())
-          main class="flex-1 flex-col flex bg-muted/40 p-4 md:p-6" {
+          main class="flex flex-col flex-1 bg-muted/40 p-4 md:p-6" {
             (content)
           }
         }
